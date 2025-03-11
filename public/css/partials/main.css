@@ -1,0 +1,40 @@
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Background from cssgradient.io */
+body {
+    min-height: 100vh;
+    margin: 0;
+    background: rgb(163, 224, 255);
+    background: linear-gradient(0deg, rgba(163, 224, 255, 1) 0%, rgba(117, 209, 255, 1) 9%, rgba(78, 195, 255, 1) 43%, rgba(36, 180, 255, 1) 68%, rgba(0, 168, 255, 1) 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: inherit; /* Hereda el fondo del body */
+}
+
+
+
+/*----- Scroll bar -----*/
+::-webkit-scrollbar {
+    width: 9px;    
+}
+::-webkit-scrollbar-thumb { /* Scroll bar (where it's clicked) */
+    background-color: #9c9c9c;
+    border-radius: 8px;
+}
+::-webkit-scrollbar-track { /* Scroll bar background */
+    background-color: #f1f1f1; 
+}

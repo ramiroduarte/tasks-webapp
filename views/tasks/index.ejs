@@ -1,0 +1,219 @@
+<%- include('../partials/main', {
+	titlePage: 'Tasks | Inicio',
+	frontend: '', 
+	backend: '/js/index-tasks.js'
+}) %>
+
+<%- include('../partials/navigation') %>
+
+<% if(tasks && tasks.length > 0){ %>     <!-- IF THERE ARE TASKS -->
+	<div class="container pt-5" >
+		<div class="row">
+			<% tasks.forEach(elem => { %>
+				<!-- Card of each task -->
+				<div class="col-md-3 pb-3 ">
+					<div 
+						class="card rounded-4 <%= elem.completed ? 'opacity-50' : '' %> border border-3 border-<%= elem.priority == 3 ? 'danger' : elem.priority == 2 ? 'warning' : elem.priority == 1 ? 'primary' : 'secondary' %>"
+					>
+						<div class="card-body pe-1 m-0 pb-0">
+							<h5 class="card-title d-flex justify-content-between" style="cursor: pointer;">
+								<!-- Title -->
+								<span class="pt-1" style="max-width: 70%; cursor: pointer;" data-bs-toggle="modal"
+									data-bs-target="#modalTask<%= elem._id %>">
+									<% if(elem.completed){ %>
+										<s>
+									<% } %>		
+									<%= elem.title %></s>
+									<% if(elem.completed){ %>
+										</s>
+									<% } %>
+								</span>
+
+								<!-- Complete task -->
+								<div class="ms-auto">
+									<!-- Hidden form to use PATCH method -->
+									<form action="/tasks/<%= elem._id %>?_method=PATCH" method="POST" style="display: none;" id="taskForm-<%= elem._id %>">
+										<input type="hidden" name="_method" value="PATCH">
+									</form>
+									<button class="btn btn-sm text-primary d-flex" onclick="document.getElementById('taskForm-<%= elem._id %>').submit();">
+										<i class='bx bx-check fs-4'></i>
+									</button>
+								</div>
+
+								<!-- Options -->
+								<div class="dropdown pt-1">
+									<button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+										<i class='bx bx-dots-vertical-rounded fs-5'></i>
+									</button>
+									<ul class="dropdown-menu shadow">
+										<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEditTask<%= elem._id %>"><i class='bx bxs-pencil'></i> Editar</a></li>
+										<li><a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#modalDeleteTask<%= elem._id %>"><i class='bx bxs-trash'></i> Eliminar</a></li>
+									</ul>
+								</div>								
+							</h5>
+
+							<!-- Description -->
+							<p>
+								<%= elem.description.length > 100 ? elem.description.slice(0, 100) + "..." : elem.description %>
+							</p>
+
+							<% if(elem.dueDate){ %>
+								<div class="card-footer p-1 bg-white text-end">
+									<small class="text-secondary" style="font-size: 0.85rem" data-due-date="<%= elem.dueDate %>"></small>
+								</div>
+							<% } %>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modal to show the task -->
+				<div class="modal fade" id="modalTask<%= elem._id %>" tabindex="-1">
+					<div class="modal-dialog modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title ms-auto">
+									Tarea
+								</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<i class='bx bxs-flag-alt text-<%= elem.priority == 3 ? ' danger' : elem.priority==2 ? 'warning' : elem.priority==1 ? 'primary' : 'secondary' %>'></i>
+								<% if(elem.dueDate){ %>
+									<small class="fs-7 text-secondary" data-due-date="<%= elem.dueDate %>"></small>
+								<% } %>
+								<br>
+								<strong><%= elem.title %></strong>
+								<br>
+								<%= elem.description %>
+							</div>
+							<div class="modal-footer">
+								<div class="me-auto">
+									<small class="text-secondary" style="font-size: 0.85rem">Creado: </small>
+									<small class="text-secondary ms-1" style="font-size: 0.85rem" data-due-date="<%= elem.creationDate %>"></small>
+								</div>
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!--  deleteTask Modal -->
+				<div class="modal fade" id="modalDeleteTask<%= elem._id %>" tabindex="-1">
+					<div class="modal-dialog modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">¿Estás seguro que quieres eliminar esta tarea?</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<i class='bx bxs-flag-alt text-<%= elem.priority == 3 ? 'danger' : elem.priority == 2 ? 'warning' : elem.priority == 1 ? 'primary' : 'secondary' %>'></i>
+								<% if(elem.dueDate){ %>
+									<small class="fs-7 text-secondary" data-due-date="<%= elem.dueDate %>"></small>
+								<% } %>
+								<br>
+								<strong><%= elem.title %></strong>
+								<br>
+								<%= elem.description %>
+							</div>
+							<div class="modal-footer">
+								<div class="me-auto">
+									<small class="text-secondary" style="font-size: 0.85rem">Creado: </small>
+									<small class="text-secondary ms-1" style="font-size: 0.85rem" data-due-date="<%= elem.creationDate %>"></small>
+								</div>
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+								<form action="/tasks/<%= elem._id %>?_method=DELETE" method="POST">
+									<input type="hidden" name="_method" value="DELETE">
+									<button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- editTask Modal -->
+				<div class="modal fade" id="modalEditTask<%= elem._id %>" tabindex="-1">
+					<div class="modal-dialog modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title w-100 text-center">Editar tarea</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<form id="formAddTask" action="/tasks" method="POST" class="needs-validation" novalidate>
+									<div class="mb-3">
+										<label for="taskTitle" class="col-form-label">Título:</label>
+										<input type="text" class="form-control" id="taskTitle" name="taskTitle" maxlength="50" required autofocus value="<%= elem.title %>"/>
+										<div class="invalid-feedback ms-2 fs-7" id="taskTitle-required">
+											Este campo es obligatorio.
+										</div>
+									</div>
+									<div class="mb-3">
+										<label for="taskDescription" class="col-form-label">
+											Descripción:
+										</label>
+										<textarea class="form-control" id="taskDescription" name="taskDescription" maxlength="500" rows="1"
+											oninput="autoExpand(this)"><%= elem.description %></textarea>
+									</div>
+									<div class="mb-3 d-flex align-items-center">
+										<div class="me-3">
+											<label for="taskDate" class="col-form-label">Fecha:</label>
+											<input type="datetime-local" id="taskDate" name="taskDueDate" class="form-control" value="<%= new Date(elem.dueDate).toISOString().slice(0, 16) %>"/>
+										</div>
+										<div>
+											<label for="taskPriority" class="col-form-label me-2">
+												Prioridad:
+											</label>
+											<select class="form-select w-auto" id="taskPriority" name="taskPriority">
+												<option value="0" class="text-secondary" <%= elem.priority == 0 ? 'selected' : null %>>Ninguna</option>
+												<option value="1" class="text-primary" <%= elem.priority == 1 ? 'selected' : null %>>Baja</option>
+												<option value="2" class="text-warning" <%= elem.priority == 2 ? 'selected' : null %>>Media</option>
+												<option value="3" class="text-danger" <%= elem.priority == 3 ? 'selected' : null %>>Alta</option>
+											</select>
+										</div>
+										<div class="ms-3">
+											<label for="taskCategory" class="col-form-label me-2">
+												Categoría:
+											</label>
+											<select class="form-select w-auto" id="taskCategory" name="taskCategory">
+												<% user.categories.forEach((elem, index) => { %>
+													<option value="<%= index %>" <%= elem.active ? "selected" : null %>>
+														<%= elem.name %>
+													</option>
+													<% }) %>
+											</select>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+									Cancelar
+								</button>
+								<button type="submit" class="btn btn-primary" form="formAddTask">Guardar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			<% }) %>
+		</div>
+	</div>
+
+
+<% } else { %>      <!-- IF NO TASKS -->
+	<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+		<symbol id="exclamation-triangle-fill" viewBox="0 0 16 16">
+			<path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+		</symbol>
+	</svg>
+	<div class="container pt-3">
+		<div class="alert alert-warning d-flex align-items-center justify-content-center" role="alert">
+			<svg class="bi flex-shrink-0 me-2" role="img" aria-label="Warning:" style="width: 20px; height: 20px;"><use xlink:href="#exclamation-triangle-fill"/></svg>
+				No tienes tareas registradas aún.
+		</div>
+	</div>
+<% } %>
+
+
+

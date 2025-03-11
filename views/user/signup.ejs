@@ -1,0 +1,97 @@
+<%- include('../partials/main', {
+        titlePage: 'Tasks | Registrarse', 
+        frontend: '', 
+        backend: './js/signup.js'
+    })
+%>
+
+
+
+<div class="container-fluid pt-4">
+    <div class="row ms-4">
+        <div class="col-12 mb-3">
+            <a href="/" class="btn border border-white text-light rounded-5"><i class='bx bx-arrow-back'></i>  Atrás</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mx-auto">
+            <div class="card rounded-4">
+                <div class="card-header text-center">
+                    <h3>Registrarse</h3>
+                </div>
+                <div class="card-body">
+                    <form class="needs-validation" action="/signup" method="POST" novalidate>
+                        <!-- Username -->
+                        <div class="mb-1 input-group">
+                            <span class="input-group-text"><i class='bx bx-at'></i></span>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Usuario" value="<%= username%>" minlength="4" maxlength="40" required autofocus>
+                            <div class="invalid-feedback ms-5 fs-7" id="username-required">
+                                Este campo es obligatorio.
+                            </div>
+                            <div class="invalid-feedback ms-5 fs-7" id="username-maxlength">
+                                El nombre de usuario debe tener a lo sumo 30 caracteres.
+                            </div>
+
+                        </div>
+                        <!-- Correo electrónico -->
+                        <div class="mb-1 input-group">
+                            <span class="input-group-text"><i class='bx bx-envelope'></i></span>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Correo electrónico" value="<%= email%>" maxlength="40" required>
+                            <div class="invalid-feedback ms-5 fs-7" id="email-required">
+                                Este campo es obligatorio.
+                            </div>
+                            <div class="invalid-feedback ms-5 fs-7" id="email-invalid">
+                                El correo electrónico no es válido.
+                            </div>
+                            <div class="invalid-feedback ms-5 fs-7" id="email-maxlength">
+                                El correo electrónico debe tener a lo sumo 30 caracteres.
+                            </div>
+                        </div>
+    
+                        <!-- Password -->
+                        <div class="mb-1 input-group">
+                            <span class="input-group-text"><i class='bx bx-lock-alt'></i></span>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" minlength="6" maxlength="50" required>
+                            <span class="input-group-text">
+                                <img src="img/passwordEyeOff.png" alt="passwordImg" id="imgPasswordEye" width="20px" height="20px" style="cursor: pointer;" onclick="passwordVisibility()">
+                            </span>
+                            <div class="invalid-feedback ms-5 fs-7" id="password-required">
+                                Este campo es obligatorio.
+                            </div>
+                            <div class="invalid-feedback ms-5 fs-7" id="password-minlength">
+                                La contraseña debe tener al menos 6 caracteres.
+                            </div>
+                            <div class="invalid-feedback ms-5 fs-7" id="password-maxlength">
+                                La contraseña debe tener a lo sumo 50 caracteres.
+                            </div>
+                        </div>
+    
+                        <!-- Repeat password -->
+                        <div class="mb-1 input-group">
+                            <span class="input-group-text"><i class='bx bx-lock-alt'></i></span>
+                            <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Repetir contraseña" required>
+                            <span class="input-group-text">
+                                <img src="img/passwordEyeOff.png" alt="passwordImg" id="imgConfirmPasswordEye" width="20px" height="20px" style="cursor: pointer;" onclick="confirmPasswordVisibility()">
+                            </span>
+                            <div class="invalid-feedback ms-5 fs-7" id="confirmPassword-required">
+                                Este campo es obligatorio.
+                            </div>
+                            <div class="invalid-feedback ms-5 fs-7" id="confirmPassword-match">
+                                Las contraseñas no coinciden.
+                            </div>
+                        </div>
+    
+                        <!-- Submit button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                        </div>
+
+                        <div class="text-center pt-3 form-text">
+                            <a href="/login" class="text-black text-decoration-none">¿Ya tienes una cuenta registrada?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>     
+</div>

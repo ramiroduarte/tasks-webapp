@@ -1,0 +1,28 @@
+<%- include('../partials/main', {
+    titlePage: 'Tasks | Editar tarea', 
+    frontend: '', 
+    backend: ''
+}) 
+%>
+
+<div class="col-md-4 mx-auto pt-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <strong>Editar tarea</strong>
+        </div>
+        <div class="card-body">
+            <form action="/tasks/<%= task._id %>?_method=PUT" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <input type="text" name="title" class="form-control text-center" placeholder="Título" value="<%= task.title %>">
+                </div>
+                <div class="form-group pt-2">
+                    <textarea name="description" class="form-control" style="resize: none; width: 100%; height: 225px"><%= task.description %></textarea>
+                </div>
+                <div class="form-group text-center pt-3">
+                    <button class="btn btn-primary btn-block" type="submit">Editar tarea</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

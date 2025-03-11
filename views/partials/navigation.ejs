@@ -1,0 +1,281 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <!-- Logo and name -->
+    <a
+      class="navbar-brand d-flex align-items-center"
+      href="/"
+      style="padding: 0px"
+    >
+      <img
+        src="/img/logoo.png"
+        alt="Logo"
+        width="40"
+        height="40"
+        class="d-inline-block align-text-top me-1"
+      />
+      Tasks App
+    </a>
+
+    <!-- Button to colapse the menu (mobile) -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <!-- Buttons on the left -->
+      <ul class="navbar-nav d-flex align-items-center">
+        <% if (user) { %>
+          <!-- Create task -->
+          <li class="nav-item">
+            <button
+              class="btn nav-link"
+              data-bs-toggle="modal"
+              data-bs-target="#modalAddTask"
+            >
+              Crear tarea
+            </button>
+          </li>
+
+          <!-- Categories -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Categorías
+            </a>
+            <ul class="dropdown-menu">
+              <% user.categories.forEach(elem => { %>
+                <% if(elem.completed){ %>
+                  <li><a class="dropdown-item active"><%= elem.name %></a></li>
+                <% }else{%>
+                  <li><a class="dropdown-item"><%= elem.name %></a></li>
+                <% } %>
+              <% }) %>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item">Administrar</a></li>
+            </ul>
+          </li>
+
+          <!-- View -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Ver
+            </a>
+            <ul class="dropdown-menu">
+              <!-- creation Date -->
+              <li>
+                <a 
+                  href="/tasks?view=creationDate&sort=<%= user.view[0].sort == "desc" ? "asc" : "desc" %>" 
+                  class="dropdown-item <%= user.view[0].name === 'creationDate' ? 'active' : '' %>"
+                >
+                  Fecha de creación
+                  <% if(user.view[0].name==='creationDate'){ %>
+                    <% if( user.view[0].sort==='desc'){ %>
+                      <i class='bx bx-down-arrow-alt'></i>
+                    <% } else { %>
+                      <i class='bx bx-up-arrow-alt'></i>
+                    <% } %>
+                  <% } %>
+                </a>
+              </li>
+              <!-- Due date -->
+              <li>
+                <a 
+                  href="/tasks?view=dueDate&sort=<%= user.view[0].sort == "desc" ? "asc" : "desc" %>"   
+                  class="dropdown-item <%= user.view[0].name === 'dueDate' ? 'active' : '' %>"
+                >
+                  Fecha de vencimiento
+                  <% if(user.view[0].name==='dueDate'){ %>
+                    <% if( user.view[0].sort==='desc'){ %>
+                      <i class='bx bx-down-arrow-alt'></i>
+                    <% } else { %> 
+                      <i class='bx bx-up-arrow-alt'></i>
+                    <% } %>
+                  <% } %>
+                </a>
+              </li>
+              <!-- Priority -->
+              <li>
+                <a 
+                  href="/tasks?view=priority&sort=<%= user.view[0].sort == "desc" ? "asc" : "desc" %>" 
+                  class="dropdown-item <%= user.view[0].name === 'priority' ? 'active' : '' %>"
+                >
+                  Prioridad
+                  <% if(user.view[0].name==='priority'){ %>
+                    <% if( user.view[0].sort==='desc'){ %>
+                      <i class='bx bx-down-arrow-alt'></i>
+                    <% } else { %>
+                      <i class='bx bx-up-arrow-alt'></i>
+                    <% } %>
+                  <% } %>
+                </a>
+              </li>
+            </ul>
+          </li>
+        <% } %>
+        <!-- Help -->
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/ramiroduarte">Ayuda</a>
+        </li>
+      </ul>
+
+      <!-- Buttons on the right -->
+      <ul class="navbar-nav ms-auto d-flex align-items-center">
+        <!-- Authenticated -->
+        <% if (user) { %>
+          <!-- Profile photo and name  -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="padding: 0px"
+            >
+              <img
+                src="https://ui-avatars.com/api/?name=<%= user.username %>&length=1&rounded=true&bolded=true&uppercase=false"
+                alt="Foto de perfil"
+                width="40"
+                height="40"
+              />
+              <%= user.username %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-xxl-end">
+              <li>
+                <a class="dropdown-item" href="/profile">
+                  <i class="bx bx-user"></i>
+                  Perfil
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/settings">
+                  <i class="bx bx-cog"></i>
+                  Configuración
+                </a>
+              </li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                <a class="dropdown-item text-danger" href="/logout">
+                  <i class="bx bx-log-out"></i>
+                  Cerrar sesión
+                </a>
+              </li>
+            </ul>
+          </li>
+        <% } else { %>
+          <!-- Not Authenticated -->
+          <!-- Login -->
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Iniciar sesión</a>
+          </li>
+          <!-- Signup -->
+          <li class="nav-item">
+            <a class="nav-link" href="/signup">Registrarse</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal create task -->
+<% if(user){ %>
+  <div class="modal fade" id="modalAddTask" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title w-100 text-center">Nueva tarea</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAddTask" action="/tasks" method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+              <label for="taskTitle" class="col-form-label">Título:</label>
+              <input
+              type="text"
+              class="form-control"
+              id="taskTitle"
+              name="taskTitle"
+              maxlength="50"
+              required
+              autofocus
+              />
+              <div class="invalid-feedback ms-2 fs-7" id="taskTitle-required">
+                Este campo es obligatorio.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="taskDescription" class="col-form-label">
+                Descripción:
+              </label>
+              <textarea
+                class="form-control"
+                id="taskDescription"
+                name="taskDescription"
+                maxlength="500"
+                rows="1"
+                oninput="autoExpand(this)"
+              ></textarea>
+            </div>
+            <div class="mb-3 d-flex align-items-center">
+              <div class="me-3" style="width: 13rem;">
+                <label for="taskDate" class="col-form-label">Fecha:</label>
+                <input type="datetime-local" id="taskDate" name="taskDueDate" class="form-control" />
+              </div>
+              <div>
+                <label for="taskPriority" class="col-form-label me-2">
+                  Prioridad:
+                </label>
+                <select class="form-select w-auto" id="taskPriority" name="taskPriority">
+                  <option value="0" class="text-secondary" selected>Ninguna</option>
+                  <option value="1" class="text-primary">Baja</option>
+                  <option value="2" class="text-warning">Media</option>
+                  <option value="3" class="text-danger">Alta</option>
+                </select>
+              </div>
+              <div class="ms-3">
+                <label for="taskCategory" class="col-form-label me-2">
+                  Categoría:
+                </label>
+                <select class="form-select w-auto" id="taskCategory" name="taskCategory">
+                  <% user.categories.forEach((elem, index)=> { %>
+                    <option value="<%= index %>" <%= elem.active ? "selected" : null %>>
+                      <%= elem.name %>
+                    </option>
+                  <% }) %>
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" form="formAddTask">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% } %>

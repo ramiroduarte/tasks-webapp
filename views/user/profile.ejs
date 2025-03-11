@@ -1,0 +1,111 @@
+<%- include('../partials/main', { 
+	titlePage: 'Tasks | Perfil',
+	frontend: '',
+	backend: '' 
+}) %>
+
+<div class="container-fluid pt-4">
+	<div class="row ms-4">
+		<div class="col-12 mb-3">
+			<a href="/" class="btn border border-white text-light rounded-5"><i class='bx bx-arrow-back'></i> Atrás</a>
+		</div>
+		<div class="col-10 mx-auto">
+			<div class="card shadow-sm border-0 rounded-4 p-4">
+				<div class="card-body d-flex align-items-center">
+					<!-- Profile photo -->
+					<img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Foto_De_Perfil_2022.jpg" alt="Foto de perfil"
+						class="rounded-circle border" style="width: 270px; height: 270px; object-fit: cover;">
+
+					<!-- User info container-->
+					<div class="ms-3 d-flex flex-column justify-content-center">
+						<h5 class="fw-bold mb-1"><%= user.username %></h5>
+						<p class="text-muted small mb-1 fst-italic"><%= user.status %></p>
+						<a href="/settings" class="btn btn-sm btn-outline-primary mt-1">Editar perfil</a>
+
+						<!-- Social media -->
+						<div class="d-flex gap-2 mt-1">
+							<% if(user.social.facebook) { %>
+								<a href="<%= user.social.facebook %>" target="_blank" class="fs-5 text-primary">
+									<i class="fab fa-facebook-square"></i>
+								</a>
+							<% } %>
+							<% if(user.social.instagram) { %>
+								<a href="<%= user.social.instagram %>" target="_blank" class="fs-5 text-danger">
+									<i class="fab fa-instagram"></i>
+								</a>
+							<% } %>
+							<% if(user.social.twitter) { %>
+								<a href="<%= user.social.twitter %>" target="_blank" class="fs-5 text-dark">
+									<i class="fa-brands fa-x-twitter"></i>
+								</a>
+							<% } %>
+							<% if(user.social.linkedin) { %>
+								<a href="<%= user.social.linkedin %>" target="_blank" class="fs-5 text-primary">
+									<i class="fab fa-linkedin"></i>
+								</a>
+								<% } %>
+							<% if(user.social.github) { %>
+								<a href="<%= user.social.github %>" target="_blank" class="fs-5 text-dark">
+									<i class="fab fa-github"></i>
+								</a>
+							<% } %>
+							<% if(user.social.website) { %>
+								<a href="<%= user.social.website %>" target="_blank" class="fs-5 text-info">
+									<i class="fas fa-globe"></i>
+								</a>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			
+				<!-- Extra info -->
+				<div class="px-4 pb-3">
+					<p class="mb-1"><strong>📧 Email:</strong>
+						<%= user.email %>
+					</p>
+				
+					<% if(user.location) { %>
+						<p class="mb-1"><strong>🌎 Ubicación:</strong>
+							<%= user.location %>
+						</p>
+					<% } %>
+				
+					<p class="mb-1">
+						<strong>📅 Registrado:</strong> <%= new Date(user.createdAt).toLocaleDateString('es-ES', { year: 'numeric' , month: 'long' , day: 'numeric' })%>
+					</p>
+				</div>
+
+			
+				<!-- Tasks counters -->
+				<div class="card-footer bg-white border-0 pt-3">
+					<div class="row text-center">
+						<div class="col">
+							<h6 class="fw-bold text-success mb-0">0</h6>
+							<p class="text-muted small mb-0">Tareas completadas</p>
+						</div>
+						<div class="col">
+							<h6 class="fw-bold text-danger mb-0">0</h6>
+							<p class="text-muted">Tareas pendientes</p>
+						</div>
+						<div class="col">
+							<h6 class="fw-bold mb-0">0</h6>
+							<p class="text-muted small mb-0">Tareas totales</p>
+						</div>
+					</div>
+			
+					<!-- Progress bar -->
+					<div class="px-3 mt-3 d-flex justify-content-between align-items-center">
+						<p class="text-muted small mb-1">Progreso</p>
+						<p class="text-muted small mb-1">0%</p>
+					</div>
+					<div class="progress" style="height: 6px;">
+						<div class="progress-bar bg-success" role="progressbar" style="width: 72%;" aria-valuenow="72" aria-valuemin="0"
+							aria-valuemax="100"></div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+</div>

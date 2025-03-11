@@ -1,0 +1,26 @@
+.logoPrincipal {
+    position: absolute;
+    top: 200px;
+    left: 70px;
+    height: 250px;
+}
+
+.principal {
+    position: absolute;
+    top: 220px;
+    left: 380px;
+    width: 600px;
+    font-family: 'Courier New';
+    font-style: normal;
+    font-size: 30px;
+    color: white;
+}
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    left: 40%;
+    font-family: Arial;
+    font-style: normal;
+    font-size: 12px;
+}

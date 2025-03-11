@@ -1,0 +1,58 @@
+<!-- Alerts with 'alerts' array -->
+<div id="alerts-container" style="position: fixed; top: 2rem; left: 50%; transform: translateX(-50%); z-index: 1050; width: calc(100% - 4rem); max-width: 40rem;">
+  <% if (alerts && alerts.length > 0) { %>
+    <% alerts.forEach(elem => { %>
+      <!-- Success -->
+      <% if(elem.type == 'success') {%>
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+          <%= elem.msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <!-- Warning -->
+      <% } else if(elem.type == 'warning') {%>
+        <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+          <%= elem.msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <!-- Danger -->
+      <% } else if(elem.type == 'danger') {%>
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+          <%= elem.msg %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% } %>
+    <% }) %>
+  <% } %>
+</div>
+
+
+<!-- Alerts with 'flash-connect' -->
+<div id="alerts-container" style="position: fixed; top: 2rem; left: 50%; transform: translateX(-50%); z-index: 1050; width: calc(100% - 4rem); max-width: 40rem;">
+  <!-- Success -->
+  <% if (success_msg && success_msg.length > 0) { %>
+    <% success_msg.forEach(elem => { %>
+      <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <%= elem %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% }) %>
+  <% } %>
+  <!-- Warning -->
+  <% if (warning_msg && warning_msg.length > 0) { %>
+    <% warning_msg.forEach(elem => { %>
+      <div class="alert alert-warning alert-dismissible fade show text-center" role="alert">
+        <%= elem %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% }) %>
+  <% } %>
+  <!-- Danger -->
+  <% if (danger_msg && danger_msg.length > 0) { %>
+    <% danger_msg.forEach(elem => { %>
+      <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        <%= elem %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% }) %>
+  <% } %>
+</div>

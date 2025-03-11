@@ -1,0 +1,66 @@
+<%- include('../partials/main', {
+        titlePage: 'Tasks | Iniciar sesión',
+        frontend: '', 
+        backend: '/js/login.js'
+    })
+%>
+
+<div class="container-fluid pt-4">
+    <div class="row ms-4">
+        <div class="col-12 mb-3">
+            <a href="/" class="btn border border-white text-light rounded-5"><i class='bx bx-arrow-back'></i>  Atrás</a>
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-md-4 mx-auto">
+            <div class="card rounded-4">
+                <div class="card-header text-center">
+                    <h3>Iniciar sesión</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/login" method="POST" class="needs-validation" novalidate>
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Correo electrónico" autofocus required>
+                                <div class="invalid-feedback ms-5 fs-7" id="email-required">
+                                    Este campo es obligatorio.
+                                </div>
+                                <div class="invalid-feedback ms-5 fs-7" id="email-invalid">
+                                    El correo electrónico no es válido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bx bx-lock-alt"></i></span>
+                                <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña" required>
+                                <span class="input-group-text">
+                                    <img src="img/passwordEyeOff.png" alt="passwordImg" id="imgPasswordEye" width="20px" height="20px" style="cursor: pointer;" onclick="passwordVisibility()">
+                                </span>
+                                <div class="invalid-feedback ms-5 fs-7" id="password-required">
+                                    Este campo es obligatorio.
+                                </div>
+                            </div>
+                        </div>
+                          
+
+                        <!-- Login button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                        </div>
+                        <div class="text-center pt-3 form-text">
+                            <a href="#" class="text-black text-decoration-none">¿Olvidaste la contraseña?</a>
+                        </div>
+                        <div class="text-center form-text">
+                            <a href="/signup" class="text-black text-decoration-none">¿No tienes una cuenta registrada?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
