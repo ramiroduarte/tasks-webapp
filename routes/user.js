@@ -1,12 +1,13 @@
 import express from 'express';
 import User from '../models/User.js';
+import Category from '../models/Category.js';
 import passport from 'passport';
 import { isAuthenticated } from '../helpers/auth.js';
 const router = express.Router();
 
 
 router.get('/login', (req, res) => {
-const errorMessage = req.flash('error');                                    //Error when the user login (ex: the user doesn't exist or the passwords don't match)
+    const errorMessage = req.flash('error');                                    //Error when the user login (ex: the user doesn't exist or the passwords don't match)
     const alerts = [];
     if(errorMessage.length > 0){
         alerts.push({ type: 'warning', msg: errorMessage[0]});
@@ -43,6 +44,8 @@ router.post('/signup', async (req, res) => {
         const newUser = new User({ username, email, password });
         await newUser.encryptPassword(password)
         await newUser.save();
+        const mainCategory = new Category({ title: 'Principal', user: newUser._id, active: true });
+        await mainCategory.save();
         req.flash('success_msg', '¡Fuite registrado correctamente!')
         res.redirect('/login');
     }

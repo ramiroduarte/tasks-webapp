@@ -55,17 +55,17 @@
               Categorías
             </a>
             <ul class="dropdown-menu">
-              <% user.categories.forEach(elem => { %>
-                <% if(elem.completed){ %>
-                  <li><a class="dropdown-item active"><%= elem.name %></a></li>
+              <% categories.forEach(elem => { %>
+                <% if(elem.active){ %>
+                  <li><a class="dropdown-item active"><%= elem.title %></a></li>
                 <% }else{%>
-                  <li><a class="dropdown-item"><%= elem.name %></a></li>
+                  <li><a class="dropdown-item"><%= elem.title %></a></li>
                 <% } %>
               <% }) %>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item">Administrar</a></li>
+              <li><a class="dropdown-item" href="/categories/edit">Administrar</a></li>
             </ul>
           </li>
 
@@ -259,8 +259,8 @@
                   Categoría:
                 </label>
                 <select class="form-select w-auto" id="taskCategory" name="taskCategory">
-                  <% user.categories.forEach((elem, index)=> { %>
-                    <option value="<%= index %>" <%= elem.active ? "selected" : null %>>
+                  <% categories.forEach(elem => { %>
+                    <option value="<%= elem._id %>" <%= elem.active ? "selected" : null %>>
                       <%= elem.name %>
                     </option>
                   <% }) %>

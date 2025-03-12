@@ -141,7 +141,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<form id="formAddTask" action="/tasks" method="POST" class="needs-validation" novalidate>
+								<form id="formEditTask" action="/tasks" method="POST" class="needs-validation" novalidate>
 									<div class="mb-3">
 										<label for="taskTitle" class="col-form-label">Título:</label>
 										<input type="text" class="form-control" id="taskTitle" name="taskTitle" maxlength="50" required autofocus value="<%= elem.title %>"/>
@@ -177,8 +177,8 @@
 												Categoría:
 											</label>
 											<select class="form-select w-auto" id="taskCategory" name="taskCategory">
-												<% user.categories.forEach((elem, index) => { %>
-													<option value="<%= index %>" <%= elem.active ? "selected" : null %>>
+												<% categories.forEach(elem => { %>
+													<option value="<%= elem._id %>" <%= elem.active ? "selected" : null %>>
 														<%= elem.name %>
 													</option>
 													<% }) %>
@@ -191,7 +191,7 @@
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 									Cancelar
 								</button>
-								<button type="submit" class="btn btn-primary" form="formAddTask">Guardar</button>
+								<button type="submit" class="btn btn-primary" form="formEditTask">Guardar</button>
 							</div>
 						</div>
 					</div>

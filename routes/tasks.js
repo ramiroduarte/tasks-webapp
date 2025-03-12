@@ -1,14 +1,17 @@
 import express from 'express'
 import User from '../models/User.js'
 import Task from '../models/Task.js'
+import Category from '../models/Category.js';
 import { isAuthenticated } from '../helpers/auth.js';
 const router = express.Router();
 
 
 
 router.get('/tasks', isAuthenticated, async (req, res) => {
+    const categories = await Category.find({ user: req.user.id }).sort({ creationDate: 1 });;
     let user = await User.findById(req.user.id);
     
+
     if (user && user.view.length > 0) {
         if (req.query.sort === "desc" || req.query.sort === "asc") {
             await User.updateOne(
@@ -37,7 +40,7 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
     let completedTasks = await Task.find({ user: req.user.id, completed: true });
     tasks = tasks.concat(completedTasks);
 
-    res.render('tasks/index', { alerts: [], tasks, user });
+    res.render('tasks/index', { alerts: [], tasks, user, categories});
 });
 
 
@@ -46,6 +49,10 @@ router.get('/tasks/edit/:id', isAuthenticated, async (req, res) => {
     res.render('tasks/edit', { alerts: [], task })
 })
 
+router.get('/categories/edit', isAuthenticated, async (req, res) => {
+    const categories = await Category.find({ user: req.user.id });
+    res.render('tasks/editCategories', { alerts: [], categories })
+})
 
 //////////////////////////////////////////////////////////////////
 //----------------------- API ------------------------------------
@@ -53,14 +60,14 @@ router.get('/tasks/edit/:id', isAuthenticated, async (req, res) => {
 //Add task
 router.post('/tasks', isAuthenticated, async (req, res) => {
     const { taskTitle, taskDescription, taskDueDate, taskPriority, taskCategory } = req.body;
-    const { categories } = await User.findById(req.user.id);
+    const category = await Category.findById(taskCategory)
     const newTask = new Task({
         user: req.user.id,
         title: taskTitle,
         description: taskDescription,
         dueDate: taskDueDate,
         priority: taskPriority,
-        category: categories[taskCategory].name
+        category: category.name
     });
     await newTask.save();
     req.flash('success_msg', '¡Tarea creada correctamente!');
@@ -92,6 +99,28 @@ router.delete('/tasks/:id', isAuthenticated, async (req, res) => {
     res.redirect('/tasks')
 })
 
+// Create category
+router.post('/categories', isAuthenticated, async (req, res) => {
+    const { categoryName } = req.body;
+    const newCategory = new Category({
+        title: categoryName,
+        user: req.user.id
+    });
+    await newCategory.save();
+    req.flash('success_msg', '¡Categoría creada correctamente!');
+    res.redirect('/categories/edit');
+})
+
+// Edit category
+router.put('/categories/:id', isAuthenticated, async (req, res) => {
+    const { categoryName } = req.body;
+    const categoryId = req.params.id; 
+
+    const update = await Category.findByIdAndUpdate(categoryId, { title: categoryName });
+    await update.save()
+    req.flash('success_msg', '¡Categoría editada correctamente!');
+    res.redirect('/categories/edit');
+})
 
 
 export default router

@@ -5,7 +5,7 @@
 
 **Templates for _views_ 'ejs' files:**
 ```
-<%- include('../partials/main', {s
+<%- include('../partials/main', {
         titlePage: '', 
         frontend: '', 
         backend: ''

@@ -17,14 +17,6 @@ const UserSchema = new Schema({
         github: { type: String, default: '' },
         website: { type: String, default: '' }
     },
-    categories: {
-        type: Array, default: [{
-            name: "Principal",
-            active: true,
-            tasksCount: 0,
-            tasksCompletedCount: 0
-        }]
-    },
     view: { //Types of view: creationDate - dueDate - priority 
         type: Array, default: [{
             name: "creationDate",

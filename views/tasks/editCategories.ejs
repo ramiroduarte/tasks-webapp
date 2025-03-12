@@ -1,0 +1,113 @@
+<%- include('../partials/main', { 
+	titlePage: 'Tasks | Editar categorias',
+	frontend: '' ,
+	backend: ''
+})
+%>
+
+<div class="container-fluid pt-4">
+	<div class="row ms-4">
+		<div class="col-2 mb-3">
+			<a href="/" class="btn border border-white text-light rounded-5"><i class='bx bx-arrow-back'></i> Atrás</a>
+		</div>
+		<div class="col-8 mb-3 text-center text-white">
+			<h2>Editar categorías</h2>
+		</div>
+		<div class="col-2"></div>
+	</div>
+
+	<div class="row ms-4">
+		<div class="col-5 mx-auto text-center">
+			<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreateCategory">Crear categoría</button>
+		</div>
+	</div>
+	<div class="row ms-4 pt-4">
+		<div class="col-5 mx-auto">
+			<ul class="list-group">
+				<% categories.forEach(elem => { %>
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						<div>
+							<h5 class="mb-1"><%= elem.title %></h5>
+							<small>✅ !! completadas | 🔄 !! pendientes | 📊 !! en total</small>
+						</div>
+						<div class="dropdown">
+							<button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+								<i class='bx bx-dots-vertical-rounded fs-5'></i>
+							</button>
+							<ul class="dropdown-menu shadow">
+								<li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modalEditCategory<%= elem._id %>"><i class='bx bxs-pencil'></i> Editar</a></li>
+								<li><a class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#modalDeleteCategory<%= elem._id %>"><i class='bx bxs-trash'></i> Eliminar</a></li>
+							</ul>
+						</div>
+					</li>
+
+
+
+
+					<!-- Modal create category -->
+					<div class="modal fade" id="modalCreateCategory" tabindex="-1">
+						<div class="modal-dialog modal-dialog-scrollable">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center">Crear categoría</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<form id="formCreateCategory" action="/categories" method="POST" class="needs-validation" novalidate>
+										<div class="mb-3">
+											<label for="categoryName" class="col-form-label">Nombre de la categoría:</label>
+											<input type="text" class="form-control" id="categoryName" name="categoryName" maxlength="30" required
+												autofocus />
+											<div class="invalid-feedback ms-2 fs-7" id="categoryName-required">
+												Este campo es obligatorio.
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+										Cancelar
+									</button>
+									<button type="submit" class="btn btn-primary" form="formCreateCategory">Crear</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal edit category -->
+					<div class="modal fade" id="modalEditCategory<%= elem._id %>" tabindex="-1">
+						<div class="modal-dialog modal-dialog-scrollable">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title w-100 text-center">Editar categoría</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<form id="formEditCategory<%= elem._id %>" action="/categories/<%= elem._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+										<input type="hidden" name="_method" value="PUT">
+										<div class="mb-3">
+											<label for="categoryName<%= elem._id %>" class="col-form-label">Nombre de la categoría:</label>
+											<input type="text" class="form-control" id="categoryName" name="categoryName<%= elem._id %>" maxlength="30" value="<%= elem.title %>"
+												required autofocus />
+											<div class="invalid-feedback ms-2 fs-7" id="categoryName-required">
+												Este campo es obligatorio.
+											</div>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+										Cancelar
+									</button>
+									<button type="submit" class="btn btn-primary" form="formEditCategory<%= elem._id %>">Editar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				<% }) %>
+			</ul>
+		</div>
+	</div>
+</div>
+
+
