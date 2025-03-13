@@ -15,14 +15,14 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
     if(req.query.sort === "desc" || req.query.sort === "asc") {
         await User.updateOne(
             { _id: req.user.id },
-            { $set: { "view.0.sort": req.query.sort } }
+            { $set: { "view.sort": req.query.sort } }
         );
     }
 
     if(["creationDate", "dueDate", "priority"].includes(req.query.view)) {
         await User.updateOne(
             { _id: req.user.id },
-            { $set: { "view.0.name": req.query.view } }
+            { $set: { "view.name": req.query.view } }
         );
     }
 
@@ -39,12 +39,12 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
 
     user = await User.findById(req.user.id);    
     let tasks;
-    if (user.view[0].name === "creationDate") {
-        tasks = await Task.find({ user: req.user.id, completed: false }).sort({ creationDate: user.view[0].sort });
-    } else if (user.view[0].name === "dueDate") {
-        tasks = await Task.find({ user: req.user.id, completed: false }).sort({ dueDate: user.view[0].sort });
-    } else if (user.view[0].name === "priority") {
-        tasks = await Task.find({ user: req.user.id, completed: false }).sort({ priority: user.view[0].sort });
+    if (user.view.name === "creationDate") {
+        tasks = await Task.find({ user: req.user.id, completed: false, category: user.categoryActive }).sort({ creationDate: user.view.sort });
+    } else if (user.view.name === "dueDate") {
+        tasks = await Task.find({ user: req.user.id, completed: false, category: user.categoryActive }).sort({ dueDate: user.view.sort });
+    } else if (user.view.name === "priority") {
+        tasks = await Task.find({ user: req.user.id, completed: false, category: user.categoryActive }).sort({ priority: user.view.sort });
     }
     let completedTasks = await Task.find({ user: req.user.id, completed: true });
     tasks = tasks.concat(completedTasks);
@@ -127,7 +127,6 @@ router.post('/categories', isAuthenticated, async (req, res) => {
 router.put('/categories/:id', isAuthenticated, async (req, res) => {
     const { categoryName } = req.body;
     const categoryId = req.params.id; 
-    console.log(categoryId)
     await Category.updateOne(
         { _id: categoryId },
         { $set: { "title": categoryName } }
@@ -139,6 +138,7 @@ router.put('/categories/:id', isAuthenticated, async (req, res) => {
 // Delete category
 router.delete('/categories/:id', isAuthenticated, async (req, res) => {
     await Category.findByIdAndDelete(req.params.id);
+    await Task.deleteMany({ category: req.params.id });
     req.flash('success_msg', '¡Categoría eliminada correctamente!')
     res.redirect('/categories/edit')
 })

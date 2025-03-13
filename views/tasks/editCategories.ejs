@@ -112,7 +112,7 @@
 						<div class="modal-dialog modal-dialog-scrollable">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title">¿Estás seguro que quieres eliminar esta categoría?</h5>
+									<h5 class="modal-title">¿Estás seguro que quieres eliminar esta categoría y todas sus tareas?</h5>
 									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body">
@@ -127,7 +127,9 @@
 								<div class="modal-footer">
 									<div class="me-auto">
 										<small class="text-secondary" style="font-size: 0.85rem">Creado: </small>
-										<small class="text-secondary ms-1" style="font-size: 0.85rem"><%= new Date(elem.creationDate).toLocaleString('es-ES', { day: '2-digit' , month: '2-digit' , year: 'numeric' , hour: '2-digit' , minute: '2-digit' }) %></small>
+										<small class="text-secondary ms-1" style="font-size: 0.85rem"><%= new Date(elem.creationDate).toLocaleString('es-ES', {
+											day: '2-digit' , month: '2-digit' , year: 'numeric' , hour: '2-digit' , minute: '2-digit' }) %>
+										</small>
 									</div>
 									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 									<form action="/categories/<%= elem._id %>?_method=DELETE" method="POST">

@@ -19,10 +19,8 @@ const UserSchema = new Schema({
         website: { type: String, default: '' }
     },
     view: { //Types of view: creationDate - dueDate - priority 
-        type: Array, default: [{
-            name: "creationDate",
-            sort: 'desc'
-        }]
+        name: { type: String, default: "creationDate" },
+        sort: { type: String, default: "desc"}
     }
 })
 

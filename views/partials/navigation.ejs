@@ -77,10 +77,10 @@
             <ul class="dropdown-menu">
               <!-- creation Date -->
               <li>
-                <a href="/tasks?view=creationDate&sort=<%= user.view[0].sort == "desc" ? "asc" : "desc" %>" class="dropdown-item <%= user.view[0].name === 'creationDate' ? 'active' : '' %>">
+                <a href="/tasks?view=creationDate&sort=<%= user.view.sort == "desc" ? "asc" : "desc" %>" class="dropdown-item <%= user.view.name === 'creationDate' ? 'active' : '' %>">
                   Fecha de creación
-                  <% if(user.view[0].name==='creationDate'){ %>
-                    <% if( user.view[0].sort==='desc'){ %>
+                  <% if(user.view.name==='creationDate'){ %>
+                    <% if( user.view.sort==='desc'){ %>
                       <i class='bx bx-down-arrow-alt'></i>
                     <% } else { %>
                       <i class='bx bx-up-arrow-alt'></i>
@@ -90,10 +90,10 @@
               </li>
               <!-- Due date -->
               <li>
-                <a href="/tasks?view=dueDate&sort=<%= user.view[0].sort == "desc" ? "asc" : "desc" %>" class="dropdown-item <%= user.view[0].name === 'dueDate' ? 'active' : '' %>">
+                <a href="/tasks?view=dueDate&sort=<%= user.view.sort == "desc" ? "asc" : "desc" %>" class="dropdown-item <%= user.view.name === 'dueDate' ? 'active' : '' %>">
                   Fecha de vencimiento
-                  <% if(user.view[0].name==='dueDate'){ %>
-                    <% if( user.view[0].sort==='desc'){ %>
+                  <% if(user.view.name==='dueDate'){ %>
+                    <% if( user.view.sort==='desc'){ %>
                       <i class='bx bx-down-arrow-alt'></i>
                     <% } else { %> 
                       <i class='bx bx-up-arrow-alt'></i>
@@ -103,10 +103,10 @@
               </li>
               <!-- Priority -->
               <li>
-                <a href="/tasks?view=priority&sort=<%= user.view[0].sort == "desc" ? "asc" : "desc" %>" class="dropdown-item <%= user.view[0].name === 'priority' ? 'active' : '' %>">
+                <a href="/tasks?view=priority&sort=<%= user.view.sort == "desc" ? "asc" : "desc" %>" class="dropdown-item <%= user.view.name === 'priority' ? 'active' : '' %>">
                   Prioridad
-                  <% if(user.view[0].name==='priority'){ %>
-                    <% if( user.view[0].sort==='desc'){ %>
+                  <% if(user.view.name==='priority'){ %>
+                    <% if( user.view.sort==='desc'){ %>
                       <i class='bx bx-down-arrow-alt'></i>
                     <% } else { %>
                       <i class='bx bx-up-arrow-alt'></i>
@@ -251,7 +251,7 @@
                 </label>
                 <select class="form-select w-auto" id="taskCategory" name="taskCategory">
                   <% categories.forEach(elem => { %>
-                    <option value="<%= elem._id %>" <%= elem.active ? "selected" : null %>>
+                    <option value="<%= elem._id %>" <%= elem._id == user.categoryActive ? "selected" : "" %>>
                       <%= elem.title %>
                     </option>
                   <% }) %>
