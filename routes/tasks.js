@@ -12,23 +12,32 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
     let user = await User.findById(req.user.id);
     
 
-    if (user && user.view.length > 0) {
-        if (req.query.sort === "desc" || req.query.sort === "asc") {
-            await User.updateOne(
-                { _id: req.user.id },
-                { $set: { "view.0.sort": req.query.sort } }
-            );
-        }
+    if(req.query.sort === "desc" || req.query.sort === "asc") {
+        await User.updateOne(
+            { _id: req.user.id },
+            { $set: { "view.0.sort": req.query.sort } }
+        );
+    }
 
-        if (["creationDate", "dueDate", "priority"].includes(req.query.view)) {
+    if(["creationDate", "dueDate", "priority"].includes(req.query.view)) {
+        await User.updateOne(
+            { _id: req.user.id },
+            { $set: { "view.0.name": req.query.view } }
+        );
+    }
+
+    if (req.query.category) {
+        const category = await Category.findById(req.query.category);
+        if (category) {
             await User.updateOne(
                 { _id: req.user.id },
-                { $set: { "view.0.name": req.query.view } }
-            );
+                { $set: { "categoryActive": req.query.category } }
+            )
         }
     }
 
-    user = await User.findById(req.user.id);
+
+    user = await User.findById(req.user.id);    
     let tasks;
     if (user.view[0].name === "creationDate") {
         tasks = await Task.find({ user: req.user.id, completed: false }).sort({ creationDate: user.view[0].sort });
@@ -67,7 +76,7 @@ router.post('/tasks', isAuthenticated, async (req, res) => {
         description: taskDescription,
         dueDate: taskDueDate,
         priority: taskPriority,
-        category: category.name
+        category: category._id
     });
     await newTask.save();
     req.flash('success_msg', '¡Tarea creada correctamente!');
@@ -86,7 +95,10 @@ router.patch('/tasks/:id', isAuthenticated, async (req, res) => {
 // Edit task
 router.put('/tasks/:id', isAuthenticated, async (req, res) => {
     const { title, description } = req.body;
-    await Task.findByIdAndUpdate(req.params.id, { title, description });
+    await Task.updateOne(
+        { _id: req.params.id },
+        { $set: { "title": title, "description": description } }
+    );
     req.flash('success_msg', '¡Tarea editada correctamente!')
     res.redirect('/tasks')
 })
@@ -115,12 +127,20 @@ router.post('/categories', isAuthenticated, async (req, res) => {
 router.put('/categories/:id', isAuthenticated, async (req, res) => {
     const { categoryName } = req.body;
     const categoryId = req.params.id; 
-
-    const update = await Category.findByIdAndUpdate(categoryId, { title: categoryName });
-    await update.save()
+    console.log(categoryId)
+    await Category.updateOne(
+        { _id: categoryId },
+        { $set: { "title": categoryName } }
+    );
     req.flash('success_msg', '¡Categoría editada correctamente!');
     res.redirect('/categories/edit');
 })
 
+// Delete category
+router.delete('/categories/:id', isAuthenticated, async (req, res) => {
+    await Category.findByIdAndDelete(req.params.id);
+    req.flash('success_msg', '¡Categoría eliminada correctamente!')
+    res.redirect('/categories/edit')
+})
 
 export default router

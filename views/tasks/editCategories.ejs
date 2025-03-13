@@ -25,6 +25,7 @@
 		<div class="col-5 mx-auto">
 			<ul class="list-group">
 				<% categories.forEach(elem => { %>
+					<% console.log(elem) %>
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<div>
 							<h5 class="mb-1"><%= elem.title %></h5>
@@ -87,7 +88,7 @@
 										<input type="hidden" name="_method" value="PUT">
 										<div class="mb-3">
 											<label for="categoryName<%= elem._id %>" class="col-form-label">Nombre de la categoría:</label>
-											<input type="text" class="form-control" id="categoryName" name="categoryName<%= elem._id %>" maxlength="30" value="<%= elem.title %>"
+											<input type="text" class="form-control" id="categoryName" name="categoryName" maxlength="30" value="<%= elem.title %>"
 												required autofocus />
 											<div class="invalid-feedback ms-2 fs-7" id="categoryName-required">
 												Este campo es obligatorio.
@@ -104,10 +105,41 @@
 							</div>
 						</div>
 					</div>
+
+
+					<!-- Modal delete category -->
+					 <div class="modal fade" id="modalDeleteCategory<%= elem._id %>" tabindex="-1">
+						<div class="modal-dialog modal-dialog-scrollable">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title">¿Estás seguro que quieres eliminar esta categoría?</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<strong><%= elem.title %></strong>
+									<br>
+									✅ !! completadas
+									<br>
+									🔄 !! pendientes
+									<br>
+									📊 !! en total
+								</div>
+								<div class="modal-footer">
+									<div class="me-auto">
+										<small class="text-secondary" style="font-size: 0.85rem">Creado: </small>
+										<small class="text-secondary ms-1" style="font-size: 0.85rem"><%= new Date(elem.creationDate).toLocaleString('es-ES', { day: '2-digit' , month: '2-digit' , year: 'numeric' , hour: '2-digit' , minute: '2-digit' }) %></small>
+									</div>
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+									<form action="/categories/<%= elem._id %>?_method=DELETE" method="POST">
+										<input type="hidden" name="_method" value="DELETE">
+										<button type="submit" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					 </div>
 				<% }) %>
 			</ul>
 		</div>
 	</div>
 </div>
-
-

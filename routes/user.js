@@ -44,8 +44,12 @@ router.post('/signup', async (req, res) => {
         const newUser = new User({ username, email, password });
         await newUser.encryptPassword(password)
         await newUser.save();
-        const mainCategory = new Category({ title: 'Principal', user: newUser._id, active: true });
+        const mainCategory = new Category({ title: 'Principal', user: newUser._id });
         await mainCategory.save();
+        await User.updateOne(
+            { _id: newUser._id },
+            { $set: { "categoryActive": mainCategory._id } }
+        )
         req.flash('success_msg', '¡Fuite registrado correctamente!')
         res.redirect('/login');
     }

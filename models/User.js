@@ -9,6 +9,7 @@ const UserSchema = new Schema({
     createdAt: { type: Date, default: Date.now },
     location: { type: String, default: '' },
     status: { type: String, default: 'Enfocado en mis objetivos 🎯' },
+    categoryActive: { type: String, default: '' },
     social: {
         facebook: { type: String, default: '' },
         twitter: { type: String, default: '' },
