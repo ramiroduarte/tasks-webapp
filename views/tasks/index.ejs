@@ -145,7 +145,8 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<form id="formEditTask" action="/tasks" method="POST" class="needs-validation" novalidate>
+								<form id="formEditTask" action="/tasks/<%= elem._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+									<input type="hidden" name="_method" value="PUT">
 									<div class="mb-3">
 										<label for="taskTitle" class="col-form-label">Título:</label>
 										<input type="text" class="form-control" id="taskTitle" name="taskTitle" maxlength="50" required autofocus value="<%= elem.title %>"/>
@@ -157,11 +158,10 @@
 										<label for="taskDescription" class="col-form-label">
 											Descripción:
 										</label>
-										<textarea class="form-control" id="taskDescription" name="taskDescription" maxlength="500" rows="1"
-											oninput="autoExpand(this)"><%= elem.description %></textarea>
+										<textarea class="form-control" id="taskDescription" name="taskDescription" maxlength="500" rows="5" oninput="autoExpand(this)"><%= elem.description ? elem.description.trim() : '' %></textarea>
 									</div>
 									<div class="mb-3 d-flex align-items-center">
-										<div class="me-3">
+										<div class="me-3" style="width: 13rem;">
 											<label for="taskDate" class="col-form-label">Fecha:</label>
 											<input type="datetime-local" id="taskDate" name="taskDueDate" class="form-control" value="<%= new Date(elem.dueDate).toISOString().slice(0, 16) %>"/>
 										</div>
@@ -169,7 +169,7 @@
 											<label for="taskPriority" class="col-form-label me-2">
 												Prioridad:
 											</label>
-											<select class="form-select w-auto" id="taskPriority" name="taskPriority">
+											<select class="form-select" id="taskPriority" name="taskPriority">
 												<option value="0" class="text-secondary" <%= elem.priority == 0 ? 'selected' : null %>>Ninguna</option>
 												<option value="1" class="text-primary" <%= elem.priority == 1 ? 'selected' : null %>>Baja</option>
 												<option value="2" class="text-warning" <%= elem.priority == 2 ? 'selected' : null %>>Media</option>
@@ -180,10 +180,10 @@
 											<label for="taskCategory" class="col-form-label me-2">
 												Categoría:
 											</label>
-											<select class="form-select w-auto" id="taskCategory" name="taskCategory">
+											<select class="form-select" id="taskCategory" name="taskCategory">
 												<% categories.forEach(elem => { %>
 													<option value="<%= elem._id %>" <%= elem.active ? "selected" : null %>>
-														<%= elem.name %>
+														<%= elem.title %>
 													</option>
 													<% }) %>
 											</select>

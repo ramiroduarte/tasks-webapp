@@ -94,10 +94,20 @@ router.patch('/tasks/:id', isAuthenticated, async (req, res) => {
 
 // Edit task
 router.put('/tasks/:id', isAuthenticated, async (req, res) => {
-    const { title, description } = req.body;
+    let { taskTitle, taskDescription, taskDueDate, taskPriority, taskCategory } = req.body;
+    taskDescription = taskDescription.trim()
+    console.log(taskTitle, taskDescription, taskDueDate, taskPriority, taskCategory)
     await Task.updateOne(
         { _id: req.params.id },
-        { $set: { "title": title, "description": description } }
+        {
+            $set: {
+                "title": taskTitle,
+                "description": taskDescription,
+                "dueDate": taskDueDate,
+                "priority": taskPriority,
+                "category": taskCategory
+            }
+        }
     );
     req.flash('success_msg', '¡Tarea editada correctamente!')
     res.redirect('/tasks')
