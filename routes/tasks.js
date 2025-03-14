@@ -13,26 +13,23 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
     
 
     if(req.query.sort === "desc" || req.query.sort === "asc") {
-        await User.updateOne(
-            { _id: req.user.id },
-            { $set: { "view.sort": req.query.sort } }
-        );
+        await User.findByIdAndUpdate(req.user.id, {
+            $set: { "view.sort": req.query.sort }
+        });
     }
 
     if(["creationDate", "dueDate", "priority"].includes(req.query.view)) {
-        await User.updateOne(
-            { _id: req.user.id },
-            { $set: { "view.name": req.query.view } }
-        );
+        await User.findByIdAndUpdate(req.user.id, {
+            $set: { "view.name": req.query.view }
+        });
     }
 
     if (req.query.category) {
         const category = await Category.findById(req.query.category);
         if (category) {
-            await User.updateOne(
-                { _id: req.user.id },
-                { $set: { "categoryActive": req.query.category } }
-            )
+            await User.findByIdAndUpdate(req.user.id, {
+                $set: { "categoryActive": req.query.category }
+            })
         }
     }
 
@@ -79,6 +76,9 @@ router.post('/tasks', isAuthenticated, async (req, res) => {
         category: category._id
     });
     await newTask.save();
+    await Category.findByIdAndUpdate(category._id, {
+        $set: { tasksCount: category.tasksCount + 1 }
+    })
     req.flash('success_msg', '¡Tarea creada correctamente!');
     res.redirect('/tasks');
 })
@@ -86,8 +86,21 @@ router.post('/tasks', isAuthenticated, async (req, res) => {
 // Tick task as completed
 router.patch('/tasks/:id', isAuthenticated, async (req, res) => {
     const task = await Task.findById(req.params.id);
-    task.completed = !task.completed;
-    await task.save();
+    await Task.findByIdAndUpdate(req.params.id, {
+        $set: { completed: !task.completed }
+    }) 
+    const category = await Category.findById(task.category);
+
+    //If task have been completed
+    if (!task.completed) {
+        await Category.findByIdAndUpdate(task.category, {
+            $set: { tasksCompletedCount: category.tasksCompletedCount + 1 }
+        })
+    } else {  //If task haven't been completed
+        await Category.findByIdAndUpdate(task.category, {
+            $set: { tasksCompletedCount: category.tasksCompletedCount - 1 }
+        })
+    }
     res.redirect('/tasks');
 })
 
@@ -96,19 +109,15 @@ router.patch('/tasks/:id', isAuthenticated, async (req, res) => {
 router.put('/tasks/:id', isAuthenticated, async (req, res) => {
     let { taskTitle, taskDescription, taskDueDate, taskPriority, taskCategory } = req.body;
     taskDescription = taskDescription.trim()
-    console.log(taskTitle, taskDescription, taskDueDate, taskPriority, taskCategory)
-    await Task.updateOne(
-        { _id: req.params.id },
-        {
-            $set: {
-                "title": taskTitle,
-                "description": taskDescription,
-                "dueDate": taskDueDate,
-                "priority": taskPriority,
-                "category": taskCategory
-            }
+    await Task.findByIdAndUpdate(req.params.id, {
+        $set: {
+            "title": taskTitle,
+            "description": taskDescription,
+            "dueDate": taskDueDate,
+            "priority": taskPriority,
+            "category": taskCategory
         }
-    );
+    });
     req.flash('success_msg', '¡Tarea editada correctamente!')
     res.redirect('/tasks')
 })
@@ -116,7 +125,21 @@ router.put('/tasks/:id', isAuthenticated, async (req, res) => {
 
 // Delete task
 router.delete('/tasks/:id', isAuthenticated, async (req, res) => {
+    const task = await Task.findById(req.params.id);
+    const category = await Category.findById(task.category)
     await Task.findByIdAndDelete(req.params.id);
+    if (task.completed) {
+        await Category.findByIdAndUpdate(task.category, {
+            $set: {
+                tasksCount: category.tasksCount - 1,
+                tasksCompletedCount: category.tasksCompletedCount - 1
+            }
+        })
+    } else {
+        await Category.findByIdAndUpdate(task.category, {
+            $set: { tasksCount: category.tasksCount - 1 }
+        })
+    }
     req.flash('success_msg', '¡Tarea eliminada correctamente!')
     res.redirect('/tasks')
 })
@@ -137,10 +160,9 @@ router.post('/categories', isAuthenticated, async (req, res) => {
 router.put('/categories/:id', isAuthenticated, async (req, res) => {
     const { categoryName } = req.body;
     const categoryId = req.params.id; 
-    await Category.updateOne(
-        { _id: categoryId },
-        { $set: { "title": categoryName } }
-    );
+    await Category.findByIdAndUpdate(categoryId, {
+        $set: { "title": categoryName }
+    });
     req.flash('success_msg', '¡Categoría editada correctamente!');
     res.redirect('/categories/edit');
 })

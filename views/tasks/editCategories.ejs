@@ -28,7 +28,11 @@
 					<li class="list-group-item d-flex justify-content-between align-items-center">
 						<div>
 							<h5 class="mb-1"><%= elem.title %></h5>
-							<small>✅ !! completadas | 🔄 !! pendientes | 📊 !! en total</small>
+							<% const { tasksCompletedCount,  tasksCount } = elem %>
+							<% const tasksPending = tasksCount - tasksCompletedCount %>
+							<small>✅ <%= tasksCompletedCount==1 ? `${tasksCompletedCount} completada` : `${tasksCompletedCount} completadas` %> | 
+								🔄 <%= tasksPending==1 ? `${tasksPending} pendiente` : `${tasksPending} pendientes`%> | 
+								📊 <%= tasksCount %> en total</small>
 						</div>
 						<div class="dropdown">
 							<button class="btn btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -85,11 +89,11 @@
 								<div class="modal-body">
 									<strong><%= elem.title %></strong>
 									<br>
-									✅ !! completadas
+									✅ <%= elem.tasksCompletedCount %> completadas
 									<br>
-									🔄 !! pendientes
+									🔄 <%= elem.tasksCount - elem.tasksCompletedCount %> pendientes
 									<br>
-									📊 !! en total
+									📊 <%= elem.tasksCount %> en total
 								</div>
 								<div class="modal-footer">
 									<div class="me-auto">

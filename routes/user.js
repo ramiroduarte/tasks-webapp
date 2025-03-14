@@ -28,13 +28,19 @@ router.get('/logout', (req, res) => {
 
 router.get('/profile', isAuthenticated, async (req, res) => {
     const user = await User.findById(req.user.id);
-    res.render('user/profile', { alerts: [], user });
+    const categories = await Category.find({ user: req.user.id })
+    let TotalTasksCount = 0, TotalTasksCompletedCount = 0;
+    categories.forEach((elem) => {
+        TotalTasksCount += elem.tasksCount;
+        TotalTasksCompletedCount += elem.tasksCompletedCount
+    })
+    res.render('user/profile', { alerts: [], user, TotalTasksCount, TotalTasksCompletedCount });
 })
 
 //------------------------------------------
 //------------------ API -------------------
 router.post('/signup', async (req, res) => {
-    const { username, email, password, confirmPassword } = req.body
+    const { username, email, password } = req.body
     const emailUser = await User.findOne({ email: email});
     if(emailUser){
         const alerts = [];
@@ -46,10 +52,9 @@ router.post('/signup', async (req, res) => {
         await newUser.save();
         const mainCategory = new Category({ title: 'Principal', user: newUser._id });
         await mainCategory.save();
-        await User.updateOne(
-            { _id: newUser._id },
-            { $set: { "categoryActive": mainCategory._id } }
-        )
+        await User.findByIdAndUpdate(newUser._id, {
+            $set: { "categoryActive": mainCategory._id }
+        })
         req.flash('success_msg', '¡Fuite registrado correctamente!')
         res.redirect('/login');
     }
