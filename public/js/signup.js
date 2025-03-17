@@ -87,26 +87,23 @@
 
 
 // Buttons for password visibility
-function passwordVisibility(){
-	const passwordInput = document.getElementById("password");
-	const imgPasswordEye = document.getElementById("imgPasswordEye");
-	if(passwordInput.type == 'password'){
-		passwordInput.type = 'text';
-		imgPasswordEye.src = 'img/passwordEyeOn.png';
-	}else{
-		passwordInput.type = 'password';
-		imgPasswordEye.src = 'img/passwordEyeOff.png';
-	}
-}
-
-function confirmPasswordVisibility(){
-	const confirmPasswordInput = document.getElementById("confirmPassword");
-	const imgConfirmPasswordEye = document.getElementById("imgConfirmPasswordEye");
-	if(confirmPasswordInput.type == 'password'){
-		confirmPasswordInput.type = 'text';
-		imgConfirmPasswordEye.src = 'img/passwordEyeOn.png';
-	}else{
-		confirmPasswordInput.type = 'password';
-		imgConfirmPasswordEye.src = 'img/passwordEyeOff.png';
-	}
-}
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("passwordEye").addEventListener("click", function () {
+        const passwordInput = document.getElementById("password");        
+        this.classList.toggle("text-primary");
+        if (passwordInput.type == 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password'
+        }
+		});
+		document.getElementById("confirmPasswordEye").addEventListener("click", function () {
+        const passwordInput = document.getElementById("confirmPassword");        
+        this.classList.toggle("text-primary");
+        if (passwordInput.type == 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password'
+        }
+		});
+});

@@ -54,15 +54,15 @@
 })();
 
 
-// Buttons for password visibility
-function passwordVisibility(){
-    const  passwordInput = document.getElementById("password");
-    const imgPasswordEye = document.getElementById("imgPasswordEye");
-    if(passwordInput.type == 'password'){
-        passwordInput.type = 'text';
-        imgPasswordEye.src = 'img/passwordEyeOn.png';
-    }else{
-        passwordInput.type = 'password';
-        imgPasswordEye.src = 'img/passwordEyeOff.png';
-    }
-}
+// Button for password visibility
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("passwordEye").addEventListener("click", function () {
+        const passwordInput = document.getElementById("password");        
+        this.classList.toggle("text-primary");
+        if (passwordInput.type == 'password') {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password'
+        }
+    });
+});

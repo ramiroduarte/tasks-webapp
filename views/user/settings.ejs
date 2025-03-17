@@ -1,0 +1,156 @@
+<%- include('../partials/main', { 
+	titlePage: 'Tasks | Configuración',
+	frontend: '',
+	backend: '' 
+}) %>
+
+
+<div class="container-fluid pt-4">
+	<div class="row ms-4">
+		<div class="col-5 mb-3">
+			<a href="/" class="btn border border-white text-light rounded-5">
+				<i class='bx bx-arrow-back'></i> Atrás
+			</a>
+		</div>
+		<div class="col-8 mx-auto">
+			<div class="card shadow-sm border-0 rounded-4 p-1 ps-4">
+				<div class="card-body">
+					<ul class="nav nav-underline mb-3" id="settingsTab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<a class="nav-link active" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab">Perfil</a>
+						</li>
+						<li class="nav-item" role="presentation">
+							<a class="nav-link" id="account-tab" data-bs-toggle="tab" href="#account" role="tab">Cuenta</a>
+						</li>
+						<li class="nav-item" role="presentation">
+							<a class="nav-link" id="social-tab" data-bs-toggle="tab" href="#social" role="tab">Redes Sociales</a>
+						</li>
+					</ul>
+					
+					<div class="tab-content">
+						<!-- Perfil -->
+						<div class="tab-pane fade show active" id="profile" role="tabpanel">
+							<div class="row">
+								<div class="col-md-7 ps-5 pt-3">
+									<form>
+										<div class="input-group mb-3 col-7">
+											<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-user" style="color: #74C0FC;"></i></span>
+											<div class="form-floating">
+												<input type="text" class="form-control" id="floatingInputGroup3" placeholder="Nombre de usuario" value="<%= user.username %>">
+												<label for="floatingInputGroup3">Nombre de usuario</label>
+											</div>
+										</div>
+										<div class="input-group mb-3 col-7">
+											<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-location-dot" style="color: #fd3030;"></i></span>
+											<div class="form-floating">
+												<input type="text" class="form-control" id="floatingInputGroup3" placeholder="Ubicación" value="<%= user.location %>">
+												<label for="floatingInputGroup3">Ubicación</label>
+											</div>
+										</div>
+										<div class="input-group mb-3 col-7">
+											<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-street-view" style="color: #FFD43B;"></i></span>
+											<div class="form-floating">
+												<input type="text" class="form-control" id="floatingInputGroup3" placeholder="Estado" value="<%= user.state %>">
+												<label for="floatingInputGroup3">Estado</label>
+											</div>
+										</div>
+										<button type="submit" class="btn btn-primary">Guardar cambios</button>
+									</form>
+								</div>
+								<div class="col-md-4 ps-5 position-relative d-flex flex-column align-items-center">
+									<input type="file" accept=".png, .jpg, .jpeg" id="profilePicInput" style="display: none;">
+									<img src="<%= user.profileImg.imgURL ? user.profileImg.imgURL : `https://ui-avatars.com/api/?name=${user.username}&length=1&rounded=true&bolded=true&uppercase=false` %>" alt="Foto de perfil" class="img-fluid rounded-circle" style="width: 225px; height: 225px">
+									<button type="button" class="btn btn-outline-primary mt-2" onclick="document.getElementById('profilePicInput').click()">Editar foto</button>
+								</div>
+							</div>
+						</div>
+						
+						<!-- Cuenta -->
+						<div class="tab-pane fade" id="account" role="tabpanel">
+							<form class="col-md-7 ps-5 pt-3">
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-at" style="color: #26b0df;"></i></span>
+									<div class="form-floating">
+										<input type="email" class="form-control" id="floatingInputGroup1" placeholder="Correo electrónico" value="<%= user.email %>">
+										<label for="floatingInputGroup1">Correo electrónico</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-lock" style="color: #000000;"></i></span>
+									<div class="form-floating">
+										<input type="password" class="form-control" id="floatingInputGroup2" placeholder="Contraseña anterior">
+										<label for="floatingInputGroup2">Contraseña anterior</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-lock" style="color: #0732b6;"></i></span>
+									<div class="form-floating">
+										<input type="password" class="form-control" id="floatingInputGroup3" placeholder="Contraseña nueva">
+										<label for="floatingInputGroup3">Contraseña nueva</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-lock" style="color: #0732b6;"></i></span>
+									<div class="form-floating">
+										<input type="password" class="form-control" id="floatingInputGroup4" placeholder="Repetir contraseña nueva">
+										<label for="floatingInputGroup1">Repetir contraseña nueva</label>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-primary">Guardar cambios</button>
+							</form>
+						</div>
+						
+						<!-- Redes Sociales -->
+						<div class="tab-pane fade" id="social" role="tabpanel">
+							<form class="col-md-7 ps-5 pt-3">
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-brands fa-x-twitter" style="color: #000000;"></i></span>
+									<div class="form-floating">
+										<input type="text" class="form-control" id="floatingInputGroup4" placeholder="Twitter" value="<%= user.social.twitter %>">
+										<label for="floatingInputGroup1">Twitter</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-brands fa-facebook" style="color: #0047c2;"></i></span>
+									<div class="form-floating">
+										<input type="text" class="form-control" id="floatingInputGroup4" placeholder="Facebook" value="<%= user.social.facebook %>">
+										<label for="floatingInputGroup1">Facebook</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-brands fa-linkedin" style="color: #004fd6;"></i></span>
+									<div class="form-floating">
+										<input type="text" class="form-control" id="floatingInputGroup4" placeholder="Linkedin" value="<%= user.social.linkedin %>">
+										<label for="floatingInputGroup1">Linkedin</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-brands fa-instagram" style="color: #ed3507;"></i></span>
+									<div class="form-floating">
+										<input type="text" class="form-control" id="floatingInputGroup4" placeholder="Instagram" value="<%= user.social.instagram %>">
+										<label for="floatingInputGroup1">Instagram</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-brands fa-github" style="color: #000000;"></i></span>
+									<div class="form-floating">
+										<input type="text" class="form-control" id="floatingInputGroup4" placeholder="GitHub" value="<%= user.social.github %>">
+										<label for="floatingInputGroup1">GitHub</label>
+									</div>
+								</div>
+								<div class="input-group mb-3">
+									<span class="input-group-text d-flex justify-content-center align-items-center" style="width: 50px"><i class="fa-solid fa-globe" style="color: #44c3ee;"></i></span>
+									<div class="form-floating">
+										<input type="text" class="form-control" id="floatingInputGroup4" placeholder="Web" value="<%= user.social.website %>">
+										<label for="floatingInputGroup1">Web</label>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-primary">Guardar cambios</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
