@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import 'dotenv/config';
 
 export const isAuthenticated = async (req, res, next) => {                  //Create a middleware to verify if the user is authenticated, this is used to determine if they can access different routes
     if (process.env.TEST_USER) {                                            //If there is a testing user
