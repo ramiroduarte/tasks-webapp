@@ -7,7 +7,6 @@ import flash from 'connect-flash';
 import passport from 'passport';
 import chalk from 'chalk';
 import ora from 'ora';
-import 'dotenv/config';
 
 //----- __dirname -----
 import { dirname } from 'path';

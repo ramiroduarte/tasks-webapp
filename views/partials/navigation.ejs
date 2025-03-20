@@ -130,20 +130,26 @@
           <!-- Profile photo and name  -->
           <li class="nav-item dropdown">
             <a
-              class="nav-link dropdown-toggle"
+              class="nav-link dropdown-toggle d-flex align-items-center"
               href="#"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
               style="padding: 0px"
             >
-              <img
-                src="https://ui-avatars.com/api/?name=<%= user.username %>&length=1&rounded=true&bolded=true&uppercase=false"
-                alt="Foto de perfil"
-                width="40"
-                height="40"
-              />
-              <%= user.username %>
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle" style="width: 40px; height: 40px; overflow: hidden; display: inline-block;">
+                  <img
+                    src="<%= user.profileImg.imgURL ? user.profileImg.imgURL : `https://ui-avatars.com/api/?name=${user.username}&length=1&rounded=true&bolded=true&uppercase=false` %>"
+                    heigth="100%"
+                    weight="100%"
+                    alt="Foto de perfil"
+                    class="img-fluid"
+                    style="object-fit: cover; object-position: center;"
+                  />
+                </div>
+                <span class="ms-1"><%= user.username %></span>
+              </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-xxl-end">
               <li>

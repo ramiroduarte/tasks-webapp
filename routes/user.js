@@ -76,7 +76,7 @@ router.post('/login', passport.authenticate('local', {                  //Passpo
 }))
 
 
-router.post('/imgProfile', isAuthenticated, fileUpload({
+router.post('/profileImg', isAuthenticated, fileUpload({
     useTempFiles: true,
     tempFileDir: './tempUploads'
 }), async (req, res) => {
@@ -94,9 +94,9 @@ router.post('/imgProfile', isAuthenticated, fileUpload({
 })
 
 
-router.delete('/imgProfile/:id', isAuthenticated, async (req, res) => {
-    const result = await deleteImage(req.params.id)
-    console.log(result)
+router.delete('/profileImg', isAuthenticated, async (req, res) => {
+    const user = await User.findById(req.user.id)
+    await deleteImage(user.profileImg.public_id);
     await User.findByIdAndUpdate(req.user.id, {
         $set: {
             'profileImg.public_id': '',
@@ -106,4 +106,70 @@ router.delete('/imgProfile/:id', isAuthenticated, async (req, res) => {
     res.redirect('/settings');
 })
 
+router.put('/settings/profile', isAuthenticated, async (req, res) => {
+    const { username, location, state } = req.body;
+    await User.findByIdAndUpdate(req.user.id, {
+        $set: {
+            username,
+            location,
+            state
+        }
+    })
+    req.flash('success_msg', '¡Se han guardado los cambios correctamente!')
+    res.redirect('/settings');
+})
+
+router.put('/settings/account', isAuthenticated, async (req, res) => {
+    const { email, passwordOld, passwordNew, passwordNewRepeated } = req.body;
+    const isPasswordCompleted = passwordOld || passwordNew || passwordNewRepeated;
+    const user = await User.findById(req.user.id)
+    const emailUser = await User.findOne({ email });
+    if (emailUser && emailUser.id !== user.id) {
+        req.flash('danger_msg', '¡El correo ya se encuentra en uso!');
+        res.redirect('/settings');
+    } else {
+        if (isPasswordCompleted) {
+            const isMatch = await user.matchPassword(passwordOld);
+            if (!isMatch) {
+                req.flash('danger_msg', '¡La contraseña actual es incorrecta!');
+                res.redirect('/settings');
+            } else {
+                const userUpdated = await User.findByIdAndUpdate(req.user.id, {
+                    $set: {
+                        'email': email,
+                        'password': passwordNew
+                    }
+                })
+                await userUpdated.encryptPassword(passwordNew);
+                req.flash('success_msg', '¡Se han guardado los cambios correctamente!');
+                res.redirect('/settings');
+            }
+        } else {
+            await User.findByIdAndUpdate(req.user.id, {
+                $set: {
+                    'email': email
+                }
+            });
+            req.flash('success_msg', '¡Se han guardado los cambios correctamente!');
+            res.redirect('/settings');
+        }
+
+    }
+})
+
+router.put('/settings/social', isAuthenticated, async (req, res) => {
+    const { facebook, instagram, twitter, linkedin, github, website } = req.body;
+    await User.findByIdAndUpdate(req.user.id, {
+        $set: {
+            'social.facebook': facebook,
+            'social.instagram': instagram,
+            'social.twitter': twitter,
+            'social.linkedin': linkedin,
+            'social.github': github,
+            'social.website': website
+        }
+    })
+    req.flash('success_msg', '¡Se han guardado los cambios correctamente!');
+    res.redirect('/settings');
+})
 export default router

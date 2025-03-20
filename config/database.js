@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import chalk from 'chalk'
 import ora from 'ora'
-import 'dotenv/config';
 
 console.log(chalk.yellow('----------------------------------------'))
 const spinner = ora(chalk.cyan('Database is connecting...')).start();

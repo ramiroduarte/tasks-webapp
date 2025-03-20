@@ -9,12 +9,12 @@
 		<div class="col-12 mb-3">
 			<a href="/" class="btn border border-white text-light rounded-5"><i class='bx bx-arrow-back'></i> Atrás</a>
 		</div>
-		<div class="col-10 mx-auto">
+		<div class="col-9 mx-auto">
 			<div class="card shadow-sm border-0 rounded-4 p-4">
 				<div class="card-body d-flex align-items-center">
 					<!-- Profile photo -->
-					<img src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Foto_De_Perfil_2022.jpg" alt="Foto de perfil"
-						class="rounded-circle border" style="width: 270px; height: 270px; object-fit: cover;">
+					<img src="<%= user.profileImg.imgURL ? user.profileImg.imgURL : `https://ui-avatars.com/api/?name=${user.username}&length=1&rounded=true&bolded=true&uppercase=false` %>" 
+						alt="Foto de perfil" class="img-fluid rounded-circle" style="width: 270px; height: 270px">
 
 					<!-- User info container-->
 					<div class="ms-3 d-flex flex-column justify-content-center">
@@ -26,32 +26,32 @@
 						<div class="d-flex gap-2 mt-1">
 							<% if(user.social.facebook) { %>
 								<a href="<%= user.social.facebook %>" target="_blank" class="fs-5 text-primary">
-									<i class="fab fa-facebook-square"></i>
+									<i class="fa-brands fa-facebook" style="color: #0047c2;"></i>
 								</a>
 							<% } %>
 							<% if(user.social.instagram) { %>
 								<a href="<%= user.social.instagram %>" target="_blank" class="fs-5 text-danger">
-									<i class="fab fa-instagram"></i>
+									<i class="fa-brands fa-instagram" style="color: #ed3507;"></i>
 								</a>
 							<% } %>
 							<% if(user.social.twitter) { %>
 								<a href="<%= user.social.twitter %>" target="_blank" class="fs-5 text-dark">
-									<i class="fa-brands fa-x-twitter"></i>
+									<i class="fa-brands fa-x-twitter" style="color: #000000;"></i>
 								</a>
 							<% } %>
 							<% if(user.social.linkedin) { %>
 								<a href="<%= user.social.linkedin %>" target="_blank" class="fs-5 text-primary">
-									<i class="fab fa-linkedin"></i>
+									<i class="fa-brands fa-linkedin" style="color: #004fd6;"></i>
 								</a>
 								<% } %>
 							<% if(user.social.github) { %>
 								<a href="<%= user.social.github %>" target="_blank" class="fs-5 text-dark">
-									<i class="fab fa-github"></i>
+									<i class="fa-brands fa-github" style="color: #000000;"></i>
 								</a>
 							<% } %>
 							<% if(user.social.website) { %>
 								<a href="<%= user.social.website %>" target="_blank" class="fs-5 text-info">
-									<i class="fas fa-globe"></i>
+									<i class="fa-solid fa-globe" style="color: #44c3ee;"></i>
 								</a>
 							<% } %>
 						</div>
@@ -60,18 +60,18 @@
 			
 				<!-- Extra info -->
 				<div class="px-4 pb-3">
-					<p class="mb-1"><strong>📧 Email:</strong>
+					<p class="mb-1"><strong><i class="fa-solid fa-at" style="color: #26b0df;"></i> Correo electrónico:</strong>
 						<%= user.email %>
 					</p>
 				
 					<% if(user.location) { %>
-						<p class="mb-1"><strong>🌎 Ubicación:</strong>
+						<p class="mb-1"><strong><i class="fa-solid fa-location-dot" style="color: #fd3030;"></i> Ubicación:</strong>
 							<%= user.location %>
 						</p>
 					<% } %>
 				
 					<p class="mb-1">
-						<strong>📅 Registrado:</strong> <%= new Date(user.createdAt).toLocaleDateString('es-ES', { year: 'numeric' , month: 'long' , day: 'numeric' })%>
+						<strong><i class="fa-solid fa-calendar-days" style="color: #74C0FC;"></i> Registrado:</strong> <%= new Date(user.createdAt).toLocaleDateString('es-ES', { year: 'numeric' , month: 'long' , day: 'numeric' })%>
 					</p>
 				</div>
 
@@ -107,8 +107,6 @@
 					</div>
 				</div>
 			</div>
-
-
 		</div>
 	</div>
 </div>

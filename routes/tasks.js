@@ -35,15 +35,17 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
 
 
     user = await User.findById(req.user.id);    
-    let tasks;
+    let tasks, completedTasks;
     if (user.view.name === "creationDate") {
         tasks = await Task.find({ user: req.user.id, completed: false, category: user.categoryActive }).sort({ creationDate: user.view.sort });
+        completedTasks = await Task.find({ user: req.user.id, completed: true, category: user.categoryActive }).sort({ creationDate: user.view.sort });
     } else if (user.view.name === "dueDate") {
         tasks = await Task.find({ user: req.user.id, completed: false, category: user.categoryActive }).sort({ dueDate: user.view.sort });
+        completedTasks = await Task.find({ user: req.user.id, completed: true, category: user.categoryActive }).sort({ dueDate: user.view.sort });
     } else if (user.view.name === "priority") {
         tasks = await Task.find({ user: req.user.id, completed: false, category: user.categoryActive }).sort({ priority: user.view.sort });
+        completedTasks = await Task.find({ user: req.user.id, completed: true, category: user.categoryActive }).sort({ priority: user.view.sort });
     }
-    let completedTasks = await Task.find({ user: req.user.id, completed: true });
     tasks = tasks.concat(completedTasks);
 
     res.render('tasks/index', { alerts: [], tasks, user, categories});
