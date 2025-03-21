@@ -1,16 +1,16 @@
 {
-  "name": "tasks",
+  "name": "tasks-webapp",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "dev": "node --env-file .env --watch server.js",
     "start": "node --env-file .env server.js"
   },
   "keywords": [],
-  "author": "Ramix",
+  "author": "Ramiro Duarte",
   "license": "ISC",
-  "description": "",
+  "description": "A simple and efficient task management web application built with Node.js, Express and MongoDB.",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "chalk": "^5.3.0",
