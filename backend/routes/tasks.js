@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-router.get('/tasks', isAuthenticated, async (req, res) => {
+router.get('/api/tasks', isAuthenticated, async (req, res) => {
     const categories = await Category.find({ user: req.user.id }).sort({ creationDate: 1 });;
     let user = await User.findById(req.user.id);
     
@@ -48,7 +48,7 @@ router.get('/tasks', isAuthenticated, async (req, res) => {
     }
     tasks = tasks.concat(completedTasks);
 
-    res.render('tasks/index', { alerts: [], tasks, user, categories});
+    res.json({ alerts: [], tasks, user, categories});
 });
 
 

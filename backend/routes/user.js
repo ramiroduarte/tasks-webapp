@@ -9,18 +9,7 @@ import Category from '../models/Category.js';
 const router = express.Router();
 
 
-router.get('/login', (req, res) => {
-    const errorMessage = req.flash('error');                                    //Error when the user login (ex: the user doesn't exist or the passwords don't match)
-    const alerts = [];
-    if(errorMessage.length > 0){
-        alerts.push({ type: 'warning', msg: errorMessage[0]});
-    }
-    res.render('user/login', { alerts })
-})
 
-router.get('/signup', (req, res) => {
-    res.render('user/signup', { alerts: [], username: '', email: '' });
-})
 
 router.get('/logout', (req, res) => {
     req.logout((err) => {
@@ -47,13 +36,16 @@ router.get('/settings', isAuthenticated, async (req, res) => {
 
 //------------------------------------------
 //------------------ API -------------------
-router.post('/signup', async (req, res) => {
+router.post('/api/signup', async (req, res) => {
     const { username, email, password } = req.body
     const emailUser = await User.findOne({ email: email});
     if(emailUser){
-        const alerts = [];
-        alerts.push({ type: 'warning', msg: 'El correo electrónico ya se encuentra en uso.'})
-        res.render('user/signup', { alerts, username, email });
+        req.session.alert = {
+            flash: false,
+            type: 'warning',
+            msg: 'El correo electrónico ya se encuentra en uso.'
+        };
+        return res.status(400).json(req.session.alert);
     }else{
         const newUser = new User({ username, email, password });
         await newUser.encryptPassword(password)
@@ -63,8 +55,12 @@ router.post('/signup', async (req, res) => {
         await User.findByIdAndUpdate(newUser._id, {
             $set: { "categoryActive": mainCategory._id }
         })
-        req.flash('success_msg', '¡Fuite registrado correctamente!')
-        res.redirect('/login');
+        req.session.alert = {
+            flash: true,
+            type: 'success',
+            msg: '¡Fuiste registrado correctamente!'
+        };
+        return res.status(200).json(req.session.alert);
     }
 })
 

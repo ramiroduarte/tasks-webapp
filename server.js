@@ -16,24 +16,25 @@ const __dirname = dirname(fileURLToPath(import.meta.url));                  //In
 
 //----- Inicialiazations -----
 const app = express();
-import './config/database.js';
-import './config/passport.js';
+import './backend/config/database.js';
+import './backend/config/passport.js';
 
 //----- Static files -----
-app.use(express.static(path.join(__dirname, 'public')));                    //Indicate the folder of the static files
+app.use(express.static(path.join(__dirname, 'frontend/public')));           //Indicate the folder of the static files
 
 //----- Settings -----
 app.set('port', process.env.PORT || 3000);                                  //Create a variable with 'port' name and value '3000'
 app.set('case sensitive routing', true);                                    //Active case sensitive in routes (ex: is not the sema 'home' with 'Home')
 app.set('view engine', 'ejs');                                              //Indicate the view engine that I'm going to use
-app.set('views', path.join(__dirname, 'views'));                            //Indicate the folder with views where are HTML files
+app.set('views', path.join(__dirname, 'frontend/views'));                   //Indicate the folder with views where are HTML files
 
 //----- Middlewares -----
 app.use(morgan('short'));                                                   //Indicate the middleware what I use, Morgan logs in console when a user makes a request
 app.use(express.urlencoded({ extended: false }));                           //Indicate how I want to receive the user data
+app.use(express.json())
 app.use(methodOverride('_method'));                                         //Indicate that I'm going to use more methods in addition to HTML provides (GET and POST). It allows you to use PUT, DELETE, etc. (ex. in forms)
 app.use(session({                                                           //Express default config. I didn't understand so much :)
-    secret: 'mysecretapp',
+    secret: process.env.SESSION_SECRET || 'mysecretapp',
     resave: true,
     saveUninitialized: true
 }));
@@ -51,12 +52,15 @@ app.use((req, res, next) => {                                               //Th
 })
 
 //----- Routes ------
-import mainRouter from './routes/main.js';
-import tasksRouter from './routes/tasks.js';
-import userRouter from './routes/user.js'
+//Backend
+import mainRouter from './backend/routes/main.js';
+import tasksRouter from './backend/routes/tasks.js';
+import userRouter from './backend/routes/user.js';
+import frontendRouter from './backend/routes/frontend.js';
 app.use(mainRouter);
 app.use(tasksRouter);
 app.use(userRouter);
+app.use(frontendRouter);
 
 app.use((req, res, next) => {
     res.status(404).send('Página no encontrada.');
