@@ -1,7 +1,32 @@
-> [!NOTE]
-> I use EJS as view engine.
+## **EndPoints:**
+| Method | Endpoint         | Description                                                        |
+|--------|------------------|--------------------------------------------------------------------|
+| `GET`  | /api/tasks/:id   | To get all tasks from an user.                                     |
+| `GET`  | /api/user/:id    | To get a user by ID.                                               |
 
-------------------------------------------
+
+-------------------------
+
+## Modules
+| Modules             | Description                                                                 |
+|----------------------|-----------------------------------------------------------------------------|
+| `dotenv`             | Used to load environment variables from the `.env` file.                    |
+| `ejs`                | Template engine for rendering views.                                        |
+| `express`            | Framework used to create routes.                                            |
+| `morgan`             | Middleware to log requests in the console.                                  |
+| `path` and `url`     | Used to indicate the `__dirname` (root path).                               |
+| `express-session`    | Used to create a user session and navigate between routes with the same session. |
+| `method-override`    | Extends HTML methods (e.g., adding PUT, DELETE to forms, which normally only support GET and POST). |
+| `mongoose`           | Used to connect with the `MongoDB` database.                               |
+| `bcryptjs`           | Encrypts passwords and generates hashes.                                    |
+| `connect-flash`      | Sends flash messages (e.g., showing alerts for invalid email or password). |
+| `passport` and `passport-local` | Used to authenticate users.                                        |
+| `chalk`              | Adds colors to the console output.                                          |
+| `ora`                | Creates a spinner and customizes messages in the console (e.g., simulating loading). |
+
+
+
+----------------------------------------
 
 **Templates for _views_ 'ejs' files:**
 ```
@@ -19,51 +44,21 @@
 
 ------------------------------------------
 
-**Nodemon CMD:** _(Nodemon is a module which it is used for initialize automatically the server every time what I save a backend file)_
+**CMD to run the server:**
 
-`npm run dev`
+```
+npm run dev
+```
 
-('run' cmd is to run a script created in 'package.json' and then the file name )
-(With nodemon I save to write 'node server.js' every time I make a change)
-
------------------------------------------
-
-In 'views/partials' folder, I add partial files which I can add them in other view file.
-An example could be the header, which it is the same in the most of routes so I write it once in 'partials' and then I require it from each file as:
-'<%- include('partials/header') #>'
+(`run` cmd is to run a script created in 'package.json' and then the file name )
 
 -----------------------------------------
 
-The 'routes' folder is to modulete the project routes and split them as I want (ex: shop, dashboard, settings).
-So in each file I write the all routes related to each module.
-
-----------------------------------------
-
-I use the EJS template engine.
-It's like a extension of HTML, because for example it may be required data from the DB and with that create a element depending on the data.
-
-----------------------------------------
-
-### **Modules:**
-- `dotenv` is used to use the '.env' file.
-- `ejs` is the template engine.
-- `express` is the framework to create routes.
-- `morgan` is a middleware to log data in console.
-- `path` and `url` is used for indicate the __dirname (is the root path).
-- `express-session` to craete a user session and navigate between the different routes with the same session.
-- `method-override` to extend the HTML methods (ex: in forms only can be used GET and POST methods) so it add PUT, DELETE, etc methods.
-- `moongose` to connect with 'MongoDB' database.
-- `bcryptjs` to encrypt password and generate a hash.
-- `connect-flash` to send alerts (ex: when the password is wrong because it is less than 4 characters or the email is incorrect)
-- `passport` and `passport-local` to authenticate the user.
-- `chalk` to use colors in the console.
-- `ora` to create a spinner and edit messages in the console. (Ex: To simulate it's loading something)
-
-
----------------------------------------
 
 To see the collections in 'mongoDB':
 - In console: `mongosh`.
 - Then `use <nombre DB>`. Ex: `use tasks-webapp`
 - `show collections` to see all collections
-- `db.<nombre DB>.find()` to see data. Ex: `db.users.find()`
+- `db.<collection name>.find()` to see data. Ex: `db.users.find()`
+- `db.dropDatabase()` to delete the all database.
+- `db.<collection name>.drop()` to delete the collection.
