@@ -1,69 +1,77 @@
-> [!NOTE]
-> I use EJS as view engine.
+# Tasks Web App 
+[![Version](https://img.shields.io/badge/version-1.0.0-orange)](https://github.com/tu-repositorio/releases)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Ftasks-webapp-production.up.railway.app%2F)
+![Project Status](https://img.shields.io/badge/status-in%20development-yellow)
 
-------------------------------------------
 
-**Templates for _views_ 'ejs' files:**
+
+## 🚀 Overview
+A simple and efficient task management web application designed to help users manage and track their daily activities efficiently. The app features user authentication, task creation, editing, and deletion, along with a clean and intuitive interface.
+
+This is a personal project created to apply and enhance my knowledge in full-stack web development. While it is not a large-scale application, it is structured to follow good development practices and scalability.  
+
+## 🚧 Development Status  
+This project is currently **_under development_** with constant updates.
+
+## ✨ Features  
+
+- **User Authentication:** Secure login and registration using hashed passwords.
+- **Task Management:** Create, update, and delete tasks with priority levels.
+- **Categorization:** Organize tasks into different categories.
+- **Profiles:** Basic user profile with profile picture and social media.
+- **Responsive Design:** Optimized for both desktop and mobile devices.
+
+## 🌍 Access the Project  
+
+You can access the live version of the project here:  **[Live Demo](https://tasks-webapp-production.up.railway.app/)**  
+
+Or check out the source code:  **[GitHub Repository](https://github.com/ramiroduarte/tasks-webapp)**  
+
+
+## 🛠 Technologies Used  
+
+### Backend  
+- Node.js  
+- Express.js  
+- MongoDB  
+- Passport.js (authentication)  
+
+### Frontend  
+- Bootstrap 5  
+- EJS (templating engine)  
+- HTML & CSS  
+
+### Additional Tools  
+- Cloudinary (image management)  
+
+## 🔧 Installation & Setup
+Follow these steps to set up the project on your local machine:
+
+**1. Ensure you have the following installed:**
+- [Node.js](https://nodejs.org/en/download)
+- [MongoDB](https://www.mongodb.com/try/download/shell)
+- [Git](https://git-scm.com/downloads)
+
+**2. Clone the Repository:**
+```bash
+git clone https://github.com/ramiroduarte/tasks-webapp.git
 ```
-<%- include('../partials/main', {
-        titlePage: '', 
-        frontend: '', 
-        backend: ''
-    })
-%>
+
+**3. Install Dependencies**
+   
+See `package.json` file and install all dependencies with `npm install`
+
+**4. Configure Environment Variables**
+
+Create a `.env` file by copying `.env.example` and fill in the required values.
+
+
+**5. Run the project**
 ```
+npm start
+```
+The app will run on `http://localhost:3000` by default.
 
-> `titlePage` is the title of the tab
-> `frontend` is the frontend file path (if it doesn't have, it's empty)
-> `backend` is the backend file path (if it doesn't have, it's empty)
-
-------------------------------------------
-
-**Nodemon CMD:** _(Nodemon is a module which it is used for initialize automatically the server every time what I save a backend file)_
-
-`npm run dev`
-
-('run' cmd is to run a script created in 'package.json' and then the file name )
-(With nodemon I save to write 'node server.js' every time I make a change)
-
------------------------------------------
-
-In 'views/partials' folder, I add partial files which I can add them in other view file.
-An example could be the header, which it is the same in the most of routes so I write it once in 'partials' and then I require it from each file as:
-'<%- include('partials/header') #>'
-
------------------------------------------
-
-The 'routes' folder is to modulete the project routes and split them as I want (ex: shop, dashboard, settings).
-So in each file I write the all routes related to each module.
-
-----------------------------------------
-
-I use the EJS template engine.
-It's like a extension of HTML, because for example it may be required data from the DB and with that create a element depending on the data.
-
-----------------------------------------
-
-### **Modules:**
-- `dotenv` is used to use the '.env' file.
-- `ejs` is the template engine.
-- `express` is the framework to create routes.
-- `morgan` is a middleware to log data in console.
-- `path` and `url` is used for indicate the __dirname (is the root path).
-- `express-session` to craete a user session and navigate between the different routes with the same session.
-- `method-override` to extend the HTML methods (ex: in forms only can be used GET and POST methods) so it add PUT, DELETE, etc methods.
-- `moongose` to connect with 'MongoDB' database.
-- `bcryptjs` to encrypt password and generate a hash.
-- `connect-flash` to send alerts (ex: when the password is wrong because it is less than 4 characters or the email is incorrect)
-- `passport` and `passport-local` to authenticate the user.
-- `chalk` to use colors in the console.
-- `ora` to create a spinner and edit messages in the console. (Ex: To simulate it's loading something)
-
-
----------------------------------------
-
-To see the collections in 'mongoDB':
-- In console: `mongosh`.
-- Then `use <nombre DB>`. Ex: `use tasks-webapp`
-- `show collections` to see all collections
-- `db.<nombre DB>.find()` to see data. Ex: `db.users.find()`
+## 👨‍💻 Developer  
+This project was developed by:  
+- **Ramiro Duarte** – [GitHub](https://github.com/ramiroduarte)  
