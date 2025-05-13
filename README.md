@@ -1,6 +1,6 @@
 # Tasks Web App 
 [![Version](https://img.shields.io/badge/version-1.0.0-orange)](https://github.com/tu-repositorio/releases)
-![Website](https://img.shields.io/website?url=https%3A%2F%2Ftasks-webapp-production.up.railway.app%2F)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Ftasks-webapp.up.railway.app%2F)
 ![Project Status](https://img.shields.io/badge/status-in%20development-yellow)
 
 
