@@ -294,7 +294,7 @@ export const deleteProfileImg = async (userId) => {
 	}
 };
 
-export const updatePassword = async (userId, oldPassword, newPassword) => {
+export const updatePassword = async (userId, { oldPassword, newPassword }) => {
 	if (!userId || !oldPassword || !newPassword) {
 		return createResponse({
 			success: false,

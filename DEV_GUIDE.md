@@ -1,8 +1,9 @@
 ## **EndPoints:**
 | Method | Endpoint         | Description                                                        |
 |--------|------------------|--------------------------------------------------------------------|
-| `GET`  | /api/tasks/:id   | To get all tasks from an user.                                     |
-| `GET`  | /api/user/:id    | To get a user by ID.                                               |
+| `GET`  | /api/users/:id    | To get a user by ID.                                               |
+| `GET`  | /api/users/:id/tasks   | To get all tasks from an user.                                     |
+| `GET`  | /api/users   | To get all users.                                     |
 
 
 -------------------------

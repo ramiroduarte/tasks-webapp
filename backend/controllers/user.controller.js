@@ -27,3 +27,61 @@ export const getTasksByUserId = async (req, res) => {
 		res.status(500).json({ msg: 'Server eror while getting tasks from user', error })
 	}
 }
+
+export const updateProfile = async (req, res) => {
+	try {
+		const response = await userService.updateProfile(req.params.id, req.body);
+		res.status(response.statusCode).json(response);
+	} catch (error) {
+		res.status(500).json({ msg: 'Server error while updating profile', error });
+	}
+}
+
+export const updateSocial = async (req, res) => {
+	try {
+		const response = await userService.updateSocial(req.params.id, req.body);
+		res.status(response.statusCode).json(response);
+	} catch (error) {
+		res.status(500).json({ msg: 'Server error while updating social', error });
+	}
+}
+
+//Falta este controller
+export const updateProfileImg = async (req, res) => {
+	//...
+}
+
+export const deleteProfileImg = async (req, res) => {
+	try {
+		const response = await userService.deleteProfileImg(req.params.id)
+	} catch (error) {
+		res.status(500).json({ msg: 'Server error while deleting profile img', error });
+	}
+}
+
+export const updatePassword = async (req, res) => {
+	try {
+		const response = await userService.updatePassword(req.params.id, req.body);
+		res.status(response.statusCode).json(response);
+	} catch (error) {
+		res.status(500).json({ msg: 'Server error while updating password', error });
+	}
+}
+
+export const deleteAccount = async (req, res) => {
+	try {
+		const response = await userService.deleteAccount(req.params.id);
+		res.status(response.statusCode).json(response);
+	} catch (error) {
+		res.status(500).json({ msg: 'Server error while deleting account', error });
+	}
+}
+
+export const updateView = async (req, res) => {
+	try {
+		const response = await userService.updateView(req.params.id, req.body);
+		res.status(response.statusCode).json(response);
+	} catch (error) {
+		res.status(500).json({ msg: 'Server error while updating view', error });
+	}
+}

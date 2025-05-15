@@ -30,7 +30,7 @@ app.set('views', path.join(__dirname, 'frontend/views'));                   //In
 
 //----- Middlewares -----
 app.use(morgan('short'));                                                   //Indicate the middleware what I use, Morgan logs in console when a user makes a request
-app.use(express.urlencoded({ extended: false }));                           //Indicate how I want to receive the user data
+app.use(express.urlencoded({ extended: true }));                            //Indicate how I want to receive the user data
 app.use(express.json())
 app.use(methodOverride('_method'));                                         //Indicate that I'm going to use more methods in addition to HTML provides (GET and POST). It allows you to use PUT, DELETE, etc. (ex. in forms)
 app.use(session({                                                           //Express default config. I didn't understand so much :)
@@ -53,14 +53,12 @@ app.use((req, res, next) => {                                               //Th
 
 //----- Routes ------
 //Backend
-import mainRouter from './backend/routes/main.js';
-import tasksRouter from './backend/routes/tasks.js';
+import tasksRouter from './backend/routes/task.js';
 import userRouter from './backend/routes/user.js';
-import frontendRouter from './backend/routes/frontend.js';
-app.use(mainRouter);
-app.use(tasksRouter);
-app.use(userRouter);
-app.use(frontendRouter);
+// import frontendRouter from './frontend/routes/frontend.js';
+app.use('/api', tasksRouter);
+app.use('/api', userRouter);
+// app.use(frontendRouter);
 
 app.use((req, res, next) => {
     res.status(404).send('Página no encontrada.');
