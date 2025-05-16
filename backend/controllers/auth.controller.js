@@ -1,22 +1,30 @@
-import * as userService from '../services/user.service.js';
+import * as authService from '../services/auth.service.js';
 
-export const login = async (req, res) => {
-	try {
-		const result = await userService.loginUser(req, res);
-		if (!result.success) {
-			return res.status(401).json(result);
-		}
-		res.status(200).json(result);
-	} catch (err) {
-		res.status(500).json({ success: false, msg: 'Server error while logging in', error: err.message });
-	}
+export const login = (req, res, next) => {																//I didn't get it so much :)
+	passport.authenticate('local', (error, user, info) => {
+		if (error) return res.status(500).json({ success: false, msg: 'Server error while logging.', error });					//If occur a internal error like db error
+		if (!user) return resolve({ success: false, msg: info.message });				//If dont find a valid user
+
+		req.login(user, (error) => {																							//Log the user
+			if (error) return res.status(500).json({ success: false, msg: 'Server error while saving session' });
+
+			res.statusCode(200).json({ success: true, data: user });
+		});
+	})(req, res, next);
 };
 
-export const logout = async (req, res) => {
+export const logout = (req, res) => {
+	req.logout((error) => {
+		if (error) return res.status(500).json({ success: false, msg: 'Server error while logging out', error });
+		res.status(200).json({ success: true });
+	});
+};
+
+export const signup = async (req, res) => {
 	try {
-		const result = await userService.logoutUser(req);
-		res.status(200).json(result);
-	} catch (err) {
-		res.status(500).json({ success: false, msg: 'Server error while logging out', error: err.message });
+		const result = await authService.signup(req.body);
+		res.status(result.statusCode).json(result);
+	} catch (error) {
+		res.status(500).json({ success: false, msg: 'Server error while signing up', error });
 	}
 };
