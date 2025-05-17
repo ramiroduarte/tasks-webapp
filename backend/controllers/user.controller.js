@@ -1,5 +1,4 @@
 import * as userService from '../services/user.service.js';
-import * as taskService from '../services/task.service.js';
 
 export const getUser = async (req, res) => {
 	try {
@@ -17,16 +16,7 @@ export const getUsers = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error while getting users', error });
 	}
-}
-
-export const getTasksByUserId = async (req, res) => {
-	try {
-		const response = await taskService.getTasksByUserId(req.params.id, req.query.categoryId, req.query.view, req.query.sort, req.query.completed);
-		res.status(response.statusCode).json(response);
-	} catch (error) {
-		res.status(500).json({ msg: 'Server eror while getting tasks from user', error })
-	}
-}
+};
 
 export const updateProfile = async (req, res) => {
 	try {
@@ -35,7 +25,7 @@ export const updateProfile = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error while updating profile', error });
 	}
-}
+};
 
 export const updateSocial = async (req, res) => {
 	try {
@@ -44,12 +34,12 @@ export const updateSocial = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error while updating social', error });
 	}
-}
+};
 
 //Falta este controller
 export const updateProfileImg = async (req, res) => {
 	//...
-}
+};
 
 export const deleteProfileImg = async (req, res) => {
 	try {
@@ -57,7 +47,7 @@ export const deleteProfileImg = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error while deleting profile img', error });
 	}
-}
+};
 
 export const updatePassword = async (req, res) => {
 	try {
@@ -66,7 +56,7 @@ export const updatePassword = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error while updating password', error });
 	}
-}
+};
 
 export const deleteAccount = async (req, res) => {
 	try {
@@ -75,7 +65,7 @@ export const deleteAccount = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error while deleting account', error });
 	}
-}
+};
 
 export const updateView = async (req, res) => {
 	try {
@@ -84,4 +74,17 @@ export const updateView = async (req, res) => {
 	} catch (error) {
 		res.status(500).json({ msg: 'Server error while updating view', error });
 	}
-}
+};
+
+export const setCategoryActive = async (req, res) => {
+	try {
+		const { categoryId } = req.body;
+		if (!categoryId) {
+			return res.status(400).json({ success: false, msg: 'Missing parameters: categoryId' });
+		}
+		const response = await userService.setCategoryActive(req.params.id, categoryId);
+		res.status(response.statusCode).json(response);
+	} catch (error) {
+		res.status(500).json({ msg: 'Server error while setting category active', error });
+	}
+};

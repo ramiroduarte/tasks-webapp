@@ -1,4 +1,3 @@
-import passport from 'passport'
 import fs from 'fs-extra';
 import { uploadImage, deleteImage } from '../helpers/cloudinary.js';
 import { createResponse } from '../helpers/responseHelper.js';
@@ -83,31 +82,6 @@ export const getAllUsers = async () => {
 			statusCode: 500
 		})
 	}
-};
-
-export const login = (req, res, next) => {																//I didn't get it so much :)
-	return new Promise((resolve, reject) => {																		//Return a promise because passport.authenticate use callbacks
-		passport.authenticate('local', (err, user, info) => {
-			if (err) return reject(err);																						//If occur a internal error like db error
-			if (!user) return resolve({ success: false, msg: info.message });				//If dont find a valid user
-
-			req.login(user, (err) => {																							//Log the user
-				if (err) return reject(err);
-				resolve({ success: true, user });
-			});
-		})(req, res, next);
-	});
-};
-
-export const logout = (req) => {																					//I didn't understand, it's similar to loginUser
-	return new Promise((resolve, reject) => {
-		req.logout((err) => {
-			if (err) {
-				return reject(err);
-			}
-			resolve({ success: true });
-		});
-	});
 };
 
 export const signup = async (username, { email, password, location, state, profileImg, social, view }) => {
@@ -406,7 +380,7 @@ export const updateView = async (userId, { name, sort }) => {
 	}
 };
 
-export const updateCategoryActive = async (userId, categoryId) => {
+export const setCategoryActive = async (userId, categoryId) => {
 	if (!userId || !categoryId) {
 		return createResponse({
 			success: false,

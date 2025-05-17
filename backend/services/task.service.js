@@ -1,9 +1,8 @@
-import User from '../models/User.js'
 import Task from '../models/Task.js'
 import Category from '../models/Category.js'
 import { createResponse } from '../helpers/responseHelper.js'
 
-export const getTasksByUserId = async (userId, categoryId, view, sort, completed) => {
+export const getTasksByUserId = async ({ userId, categoryId, view, sort, completed }) => {
 	if (!userId) {
 		return createResponse({
 			success: false,
@@ -56,61 +55,7 @@ export const getTask = async (taskId) => {
 			statusCode: 500
 		})
 	}
-}
-
-export const getCategory = async (categoryId) => {
-	if (!categoryId) {
-		return createResponse({
-			success: false,
-			msg: 'Missing parameters',
-			statusCode: 400
-		})
-	};
-	try {
-		const category = await Category.findById(categoryId);
-		return createResponse({
-			data: category
-		});
-	} catch (err) {
-		return createResponse({
-			success: false,
-			msg: 'Server error while getting category',
-			error: err.message.message,
-			statusCode: 500
-		})
-	}
-}
-
-export const getCategoriesByUserId = async (userId) => {
-	if (!userId) {
-		return createResponse({
-			success: false,
-			msg: 'Missing parameters',
-			statusCode: 400
-		})
-	};
-
-	try {
-		const categories = await Category.find({ user: userId });
-		if (!categories) {
-			return createResponse({
-				success: false,
-				msg: 'Categories not found',
-				statusCode: 404
-			})
-		}
-		return createResponse({
-			data: categories
-		});
-	} catch (err) {
-		return createResponse({
-			success: false,
-			msg: 'Server error while getting categories from user',
-			error: err.message.message,
-			statusCode: 500
-		})
-	}
-}
+};
 
 export const setTask = async (userId, { title, description, categoryId, dueDate, priority }) => {
 	if (!userId || !title || !categoryId) {
@@ -155,7 +100,7 @@ export const setTask = async (userId, { title, description, categoryId, dueDate,
 			statusCode: 500
 		});
 	}
-}
+};
 
 export const setTaskAsCompleted = async (taskId) => {
 	if (!taskId) {
@@ -207,7 +152,7 @@ export const setTaskAsCompleted = async (taskId) => {
 			statusCode: 500
 		})
 	}
-}
+};
 
 export const editTask = async (taskId, { title, description, category, dueDate, priority }) => {
 	if (!title || !description || !category || !dueDate || !priority) {
@@ -253,7 +198,7 @@ export const editTask = async (taskId, { title, description, category, dueDate, 
 			statusCode: 500
 		})
 	}
-}
+};
 
 export const deleteTask = async (taskId) => {
 	if (!taskId) {
@@ -300,142 +245,4 @@ export const deleteTask = async (taskId) => {
 			statusCode: 500
 		})
 	}
-}
-
-export const createCategory = async (userId, title) => {
-	if (!title) {
-		return createResponse({
-			success: false,
-			msg: 'Missing parameters',
-			statusCode: 400
-		})
-	}
-
-	try {
-		const newCategory = new Category({
-			title,
-			user: userId
-		});
-		await newCategory.save();
-
-		return createResponse({
-			data: newCategory
-		})
-	} catch (err) {
-		return createResponse({
-			success: false,
-			msg: 'Server error while creating category',
-			error: err.message,
-			statusCode: 500
-		})
-	}
-}
-
-export const editCategory = async (categoryId, title) => {
-	if (!categoryId || !title) {
-		return createResponse({
-			success: false,
-			msg: 'Missing parameters',
-			statusCode: 400
-		})
-	}
-
-	try {
-		let category = await Category.findByIdAndUpdate(categoryId,
-			{ $set: { title } },
-			{ new: true }
-		);
-		if (!category) {
-			return createResponse({
-				success: false,
-				msg: 'Category not found',
-				statusCode: 404
-			})
-		}
-
-		return createResponse({
-			data: category
-		})
-	} catch (err) {
-		return createResponse({
-			success: false,
-			msg: 'Server error while editing category',
-			error: err.message,
-			statusCode: 500
-		})
-	}
-}
-
-export const deleteCategory = async (categoryId) => {
-	if (!categoryId) {
-		return createResponse({
-			success: false,
-			msg: 'Missing parameters',
-			statusCode: 400
-		})
-	}
-
-	try {
-		const category = await Category.findByIdAndDelete(categoryId);
-		if (!category) {
-			return createResponse({
-				success: false,
-				msg: 'Category not found',
-				statusCode: 404
-			})
-		}
-
-		return createResponse({
-			data: category
-		})
-	} catch (err) {
-		return createResponse({
-			success: false,
-			msg: 'Server error while deleting category',
-			error: err.message,
-			statusCode: 500
-		})
-	}
-}
-
-export const setCategoryActive = async (userId, categoryId) => {
-	if (!userId || !categoryId) {
-		return createResponse({
-			success: false,
-			msg: 'Missing parameters',
-			statusCode: 400
-		})
-	}
-
-	try {
-		const category = await Category.findById(categoryId);
-		if (!category) {
-			return createResponse({
-				success: false,
-				msg: 'Category not found',
-				statusCode: 404
-			})
-		}
-		const user = await User.findByIdAndUpdate(userId,
-			{ $set: { categoryActive: categoryId } },
-			{ new: true }
-		);
-		if (!user) {
-			return createResponse({
-				success: false,
-				msg: 'User not found',
-				statusCode: 404
-			})
-		}
-		return createResponse({
-			data: { user, category }
-		})
-	} catch (err) {
-		return createResponse({
-			success: false,
-			msg: 'Server error while setting category active',
-			error: err.message,
-			statusCode: 500
-		})
-	}
-}
+};

@@ -1,4 +1,3 @@
-import passport from 'passport'
 import { createResponse } from '../helpers/responseHelper.js';
 import User from '../models/User.js'
 import Category from '../models/Category.js';
