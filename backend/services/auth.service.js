@@ -22,7 +22,7 @@ export const signup = async ({ username, email, password, location, state, profi
 			const newUser = new User({ username, email, password, location, state, profileImg, social, view });
 			await newUser.encryptPassword(password);
 			await newUser.save();
-			const mainCategory = new Category({ title: 'Principal', user: newUser._id });
+			const mainCategory = new Category({ user: newUser._id });
 			await mainCategory.save();
 			await User.findByIdAndUpdate(newUser._id, {
 				$set: { categoryActive: mainCategory._id }
