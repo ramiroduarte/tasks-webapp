@@ -1,11 +1,12 @@
 import categoryService from '../services/category.service.js'
+import { sendRes } from '../helpers/responseHelper.js';
 
 export const getCategory = async (req, res) => {
 	try {
 		const response = await categoryService.getCategory(req.params.id);
 		res.status(response.statusCode).json(response);
 	} catch (error) {
-		res.status(500).json({ success: false, msg: 'Server error while getting category' });
+		sendRes(res, 500, { msg: 'Server error while getting category', error });
 	}
 };
 
@@ -15,19 +16,7 @@ export const createCategory = async (req, res) => {
 		const response = await categoryService.createCategory(userId, title);
 		res.status(response.statusCode).json(response);
 	} catch (error) {
-		res.status(500).json({ success: false, msg: 'Server error while creating category' });
-	}
-};
-
-export const getCategoriesByUserId = async (req, res) => {
-	try {
-		if (!req.query.userId) {
-			return res.status(400).json({ success: false, msg: 'Missing query: userId' });
-		}
-		const response = await categoryService.getCategory(req.query.userId);
-		res.status(response.statusCode).json(response);
-	} catch (error) {
-		res.status(500).json({ success: false, msg: 'Server error while getting category' });
+		sendRes(res, 500, { msg: 'Server error while creating category', error });
 	}
 };
 
@@ -35,12 +24,12 @@ export const editCategory = async (req, res) => {
 	try {
 		const { title } = req.query;
 		if (!title) {
-			return res.status(400).json({ success: false, msg: 'Missing queries: title' })
+			return sendRes(res, 400, { msg: 'Missing queries: title' });
 		}
 		const response = await categoryService.editCategory(req.params.id, title);
 		res.status(response.statusCode).json(response);
 	} catch (error) {
-		res.status(500).json({ success: false, msg: 'Server error while editing category' });
+		sendRes(res, 500, { msg: 'Server error while editing category', error })
 	}
 };
 
@@ -49,6 +38,6 @@ export const deleteCategory = async (req, res) => {
 		const response = await categoryService.deleteCategory(req.params.id);
 		res.status(response.statusCode).json(response);
 	} catch (error) {
-		res.status(500).json({ success: false, msg: 'Server error while deleting category' });
+		sendRes(res, 500, { msg: 'Server error while deleting category', error });
 	}
 };
