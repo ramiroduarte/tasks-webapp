@@ -1,5 +1,5 @@
-import Category from '../models/Category'
-import { createRes } from "../helpers/responseHelper";
+import Category from '../models/Category.js'
+import { createRes } from '../helpers/responseHelper.js';
 
 export const getCategory = async (categoryId) => {
 	if (!categoryId) {

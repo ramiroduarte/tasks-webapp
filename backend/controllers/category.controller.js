@@ -1,4 +1,4 @@
-import categoryService from '../services/category.service.js'
+import * as categoryService from '../services/category.service.js'
 import { sendRes } from '../helpers/responseHelper.js';
 
 export const getCategory = async (req, res) => {

@@ -15,5 +15,6 @@ router.delete('/users/:id/profileImg', userController.deleteProfileImg);
 router.put('/users/:id/password', userController.updatePassword);
 router.delete('/users/:id', userController.deleteAccount);
 router.put('/users/:id/view', userController.updateView);
+router.patch('/users/:id/categoryActive', userController.setCategoryActive);
 
 export default router;

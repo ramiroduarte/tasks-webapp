@@ -53,10 +53,14 @@ app.use((req, res, next) => {                                               //Th
 
 //----- Routes ------
 //Backend
-import tasksRouter from './backend/routes/task.js';
+import authRouter from './backend/routes/auth.js';
+import categoryRouter from './backend/routes/category.js';
+import taskRouter from './backend/routes/task.js';
 import userRouter from './backend/routes/user.js';
 // import frontendRouter from './frontend/routes/frontend.js';
-app.use('/api', tasksRouter);
+app.use('/api', authRouter);
+app.use('/api', categoryRouter);
+app.use('/api', taskRouter);
 app.use('/api', userRouter);
 // app.use(frontendRouter);
 
