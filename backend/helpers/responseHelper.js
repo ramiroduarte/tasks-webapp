@@ -13,5 +13,5 @@ export const createRes = (statusCode = 200, { msg = '', data = null, error = nul
 };
 
 export const sendRes = (res, statusCode, { msg = '', data = null, error = null } = {}) => {
-	return res.status(statusCode).json(createResponse(statusCode, { msg, data, error }));
+	return res.status(statusCode).json(createRes(statusCode, { msg, data, error }));
 }

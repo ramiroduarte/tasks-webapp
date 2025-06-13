@@ -6,15 +6,11 @@ import Task from '../models/Task.js'
 import Category from '../models/Category.js';
 
 export const getUserById = async (userId) => {
-	if (!userId) {
-		return createRes(400, { msg: 'Missing parameters' })
-	}
+	if (!userId) return createRes(400, { msg: 'Missing parameters' })
 
 	try {
 		const user = await User.findById(userId, '-password');
-		if (!user) {
-			return createRes(404, { msg: 'User not found' })
-		}
+		if (!user) return createRes(404, { msg: 'User not found' })
 
 		return createRes(200, { data: user })
 	} catch (error) {
@@ -23,9 +19,7 @@ export const getUserById = async (userId) => {
 };
 
 export const getTasksByUserId = async ({ userId, categoryId, view, sort, completed }) => {
-	if (!userId) {
-		return createRes(400, { msg: 'Missing parameters' })
-	};
+	if (!userId) return createRes(400, { msg: 'Missing parameters' })
 
 	const query = { user: userId };
 	if (categoryId) query.category = categoryId;
@@ -44,31 +38,32 @@ export const getTasksByUserId = async ({ userId, categoryId, view, sort, complet
 };
 
 export const getCategoriesByUserId = async (userId) => {
-	if (!userId) {
-		return createRes(400, { msg: 'Missing parameters' })
-	};
+	if (!userId) return createRes(400, { msg: 'Missing parameters: userId' })
 
 	try {
 		const categories = await Category.find({ user: userId });
 		if (!categories) {
 			return createRes(404, { msg: 'Categories not found' })
 		}
-		return createRes(200, { data: categories });
+		let TotalTasksCompletedCount = 0;
+		let TotalTasksCount = 0;
+		categories.forEach(elem => {
+			TotalTasksCompletedCount += elem.tasksCompletedCount;
+			TotalTasksCount += elem.tasksCount;
+		});
+
+		return createRes(200, { data: { categories, TotalTasksCount, TotalTasksCompletedCount } });
 	} catch (error) {
-		return createRes(500, { msg: 'Server error while getting categories from user', error })
+		return createRes(500, { msg: 'Server error while getting categories from user', error: error.message })
 	}
 };
 
 export const getUserByEmail = async (email) => {
-	if (!email) {
-		return createRes(400, { msg: 'Missing parameters' })
-	}
+	if (!email) return createRes(400, { msg: 'Missing parameters' })
 
 	try {
 		const user = await User.findOne({ email }, '-password');
-		if (!user) {
-			return createRes(404, { msg: 'User not found' })
-		}
+		if (!user) return createRes(404, { msg: 'User not found' })
 
 		return createRes(200, { data: user })
 	} catch (error) {
@@ -86,9 +81,8 @@ export const getAllUsers = async () => {
 };
 
 export const signup = async (username, { email, password, location, state, profileImg, social, view }) => {
-	if (!username || !email || !password) {
-		return createRes(400, { msg: 'Missing parameters' })
-	}
+	if (!username || !email || !password) return createRes(400, { msg: 'Missing parameters' })
+
 	try {
 		const emailUser = await User.findOne({ email });
 		if (emailUser) {
@@ -110,19 +104,15 @@ export const signup = async (username, { email, password, location, state, profi
 };
 
 export const updateProfile = async (userId, { username, email, state, location }) => {
-	if (!userId || !username || !email || !state || !location) {
-		return createRes(400, { msg: 'Missing parameters' })
-	}
+	if (!userId || !username || !email || !state || !location) return createRes(400, { msg: 'Missing parameters' })
+
 	try {
 		const user = await User.findByIdAndUpdate(userId,
 			{ $set: { username, email, state, location } },
 			{ new: true }
 		);
-		if (!user) {
-			return createRes(404, { msg: 'User not found' })
-		} else {
-			return createRes(200, { data: user })
-		}
+		if (!user) return createRes(404, { msg: 'User not found' })
+		else return createRes(200, { data: user })
 	} catch (error) {
 		return createRes(500, { msg: 'Server error while updating user', error })
 	}

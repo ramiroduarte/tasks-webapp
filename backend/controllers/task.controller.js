@@ -12,8 +12,8 @@ export const getTask = async (req, res) => {
 
 export const setTask = async (req, res) => {
 	try {
-		const { title, description, categoryId, dueDate, priority } = req.body;
-		const response = await taskService.getTask(req.params.id, { title, description, categoryId, dueDate, priority });
+		const { taskTitle, taskDescription, taskCategory, taskDueDate, taskPriority } = req.body;
+		const response = await taskService.setTask(req.body.userId, { title: taskTitle, description: taskDescription, categoryId: taskCategory, dueDate: taskDueDate, priority: taskPriority });
 		res.status(response.statusCode).json(response);
 	} catch (error) {
 		sendRes(res, 500, { msg: 'Server error while setting a task', error });
@@ -22,7 +22,7 @@ export const setTask = async (req, res) => {
 
 export const setTaskAsCompleted = async (req, res) => {
 	try {
-		const response = await taskService.getTask(req.params.id);
+		const response = await taskService.setTaskAsCompleted(req.params.id);
 		res.status(response.statusCode).json(response);
 	} catch (error) {
 		sendRes(res, 500, { msg: 'Server error while setting a task as completed', error });

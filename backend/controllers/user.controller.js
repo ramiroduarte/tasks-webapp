@@ -32,10 +32,7 @@ export const getTasksByUserId = async (req, res) => {
 
 export const getCategoriesByUserId = async (req, res) => {
 	try {
-		if (!req.body.userId) {
-			return sendRes(res, 400, { msg: 'Missing query: userId' });
-		}
-		const response = await userService.getCategory(req.query.userId);
+		const response = await userService.getCategoriesByUserId(req.params.id);
 		res.status(response.statusCode).json(response);
 	} catch (error) {
 		sendRes(res, 500, { msg: 'Server error while getting category', error });

@@ -1,9 +1,7 @@
 (() => {
 	'use strict';                                                                   // Activate 'scrict mode' to prevent silent errors and use good practices
-	
-	console.log("HOLAA")
+
 	const forms = document.querySelectorAll('.needs-validation');                   // Select all forms with 'needs-validation' class
-	console.log(forms)
 	Array.from(forms).forEach(form => {                                             // Iterate all selected forms
 		form.addEventListener('submit', event => {                                  // Add an event when submitting a form
 			if (!form.checkValidity()) {                                            // If the form is invalid, prevent it from being sent
@@ -30,11 +28,10 @@
 		feedbacks.forEach(feedback => feedback.classList.remove('d-block'));
 
 		const passwordOld = document.getElementById('passwordOld');
-        const passwordNew = document.getElementById('passwordNew');
-        const passwordNewRepeated = document.getElementById('passwordNewRepeated');
+		const passwordNew = document.getElementById('passwordNew');
+		const passwordNewRepeated = document.getElementById('passwordNewRepeated');
 
-        const isPasswordCompleted = passwordOld.value || passwordNew.value || passwordNewRepeated.value;
-		console.log("Valor:", isPasswordCompleted);
+		const isPasswordCompleted = passwordOld.value || passwordNew.value || passwordNewRepeated.value;
 		if (input.id === 'email') {
 			if (input.validity.valueMissing) {
 				const requiredFeedback = input.parentElement.querySelector('#email-required');
@@ -42,7 +39,7 @@
 			} else if (input.validity.typeMismatch) {
 				const invalidFeedback = input.parentElement.querySelector('#email-invalid');
 				if (invalidFeedback) invalidFeedback.style.display = 'block';
-			} else if(input.validity.tooLong){
+			} else if (input.validity.tooLong) {
 				const invalidFeedback = input.parentElement.querySelector('#email-maxlength');
 				if (invalidFeedback) invalidFeedback.style.display = 'block';
 			}
@@ -58,7 +55,7 @@
 			} else if (input.validity.tooShort) {
 				const invalidFeedback = input.parentElement.querySelector('#passwordNew-minlength');
 				if (invalidFeedback) invalidFeedback.style.display = 'block';
-			} else if(input.validity.tooLong){
+			} else if (input.validity.tooLong) {
 				const invalidFeedback = input.parentElement.querySelector('#passwordNew-maxlength');
 				if (invalidFeedback) invalidFeedback.style.display = 'block';
 			}

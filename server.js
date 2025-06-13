@@ -35,8 +35,13 @@ app.use(express.json())
 app.use(methodOverride('_method'));                                         //Indicate that I'm going to use more methods in addition to HTML provides (GET and POST). It allows you to use PUT, DELETE, etc. (ex. in forms)
 app.use(session({                                                           //Express default config. I didn't understand so much :)
     secret: process.env.SESSION_SECRET || 'mysecretapp',
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
+    }
 }));
 app.use(passport.initialize());                                             //This middleware initialize passport
 app.use(passport.session())                                                 //This middleware use express sessions
@@ -53,16 +58,30 @@ app.use((req, res, next) => {                                               //Th
 
 //----- Routes ------
 //Backend
-import authRouter from './backend/routes/auth.js';
-import categoryRouter from './backend/routes/category.js';
-import taskRouter from './backend/routes/task.js';
-import userRouter from './backend/routes/user.js';
-// import frontendRouter from './frontend/routes/frontend.js';
-app.use('/api', authRouter);
-app.use('/api', categoryRouter);
-app.use('/api', taskRouter);
-app.use('/api', userRouter);
-// app.use(frontendRouter);
+import authAPI from './backend/routes/auth.js';
+import categoryAPI from './backend/routes/category.js';
+import taskAPI from './backend/routes/task.js';
+import userAPI from './backend/routes/user.js';
+app.use('/api', authAPI);
+app.use('/api', categoryAPI);
+app.use('/api', taskAPI);
+app.use('/api', userAPI);
+
+//Frontend
+import taskRouter from './frontend/routes/task.js';
+import userRouter from './frontend/routes/user.js';
+app.use(taskRouter);
+app.use(userRouter);
+
+
+
+app.get('/', async (req, res) => {
+    if ((req.isAuthenticated && req.isAuthenticated()) || req.user) {
+        res.redirect('/tasks');
+    } else {
+        res.render('main/index', { alerts: [] });
+    }
+})
 
 app.use((req, res, next) => {
     res.status(404).send('Página no encontrada.');
