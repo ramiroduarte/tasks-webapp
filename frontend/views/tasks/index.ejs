@@ -145,7 +145,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<form id="formEditTask" action="/tasks/<%= elem._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+								<form id="formEditTask<%= elem._id %>" action="/tasks/<%= elem._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
 									<input type="hidden" name="_method" value="PUT">
 									<div class="mb-3">
 										<label for="taskTitle" class="col-form-label">Título:</label>
@@ -195,7 +195,7 @@
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
 									Cancelar
 								</button>
-								<button type="submit" class="btn btn-primary" form="formEditTask">Guardar</button>
+								<button type="submit" class="btn btn-primary" form="formEditTask<%= elem._id %>">Guardar</button>
 							</div>
 						</div>
 					</div>

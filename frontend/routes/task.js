@@ -7,8 +7,16 @@ router.get('/tasks', requireAuth, async (req, res) => {
 	const userId = req.user._id;
 
 	try {
+		if (req.query.category) {
+			const { data: categoryActive } = await api.patch(`/api/users/${userId}/categoryActive`, { categoryId: req.query.category })
+			if (!categoryActive.success) throw new Error(categoryActive);
+		}
+		if (req.query.view && req.query.sort) {
+			const { data: newView } = await api.put(`/api/users/${userId}/view`, { name: req.query.view, sort: req.query.sort })
+			if (!newView.success) throw new Error(newView);
+		}
 		const { data: user } = await api.get(`/api/users/${userId}`);
-		const { data: tasks } = await api.get(`/api/users/${userId}/tasks`);
+		const { data: tasks } = await api.get(`/api/users/${userId}/tasks?categoryId=${user.data.categoryActive}&view=${user.data.view.name}&sort=${user.data.view.sort}&completed=true`);
 		const { data: categories } = await api.get(`/api/users/${userId}/categories`);
 		if (!user.success) throw new Error(user);
 		if (!tasks.success) throw new Error(tasks);
@@ -26,7 +34,11 @@ router.get('/tasks', requireAuth, async (req, res) => {
 router.post('/tasks', requireAuth, async (req, res) => {
 	try {
 		const { data } = await api.post('/api/tasks', {
-			...req.body,
+			title: req.body.taskTitle,
+			description: req.body.taskDescription,
+			categoryId: req.body.taskCategory,
+			dueDate: req.body.taskDueDate,
+			priority: req.body.taskPriority,
 			userId: req.user._id
 		});
 		if (!data.success) throw new Error(data);
@@ -36,8 +48,6 @@ router.post('/tasks', requireAuth, async (req, res) => {
 		res.redirect('/tasks')
 	}
 })
-
-
 
 router.get('/tasks/edit/:id', requireAuth, async (req, res) => {
 	try {
@@ -56,10 +66,9 @@ router.get('/tasks/edit/:id', requireAuth, async (req, res) => {
 
 router.get('/categories/edit', requireAuth, async (req, res) => {
 	try {
-		const { data: categories } = await api.get(`/api/users/${req.params.id}/categories`);
-		if (!categories.success) throw new Error(categories);
-
-		res.render('tasks/editCategories', { alerts: [], categories: categories.data });
+		const { data } = await api.get(`/api/users/${req.user._id}/categories`);
+		if (!data.success) throw new Error(categories);
+		res.render('tasks/editCategories', { alerts: [], categories: data.data.categories });
 	} catch (error) {
 		res.render('error', {
 			msg: 'No se pudo editar las categorias.',
@@ -67,5 +76,63 @@ router.get('/categories/edit', requireAuth, async (req, res) => {
 		});
 	}
 })
+
+router.post('/categories', requireAuth, async (req, res) => {
+	try {
+		const { data } = await api.post('/api/categories', {
+			title: req.body.categoryName,
+			userId: req.user._id
+		})
+		if (!data.success) throw new Error(data);
+		res.redirect('/categories/edit')
+	} catch (error) {
+		req.flash('danger_msg', 'Ha ocurrido un error al momento de editar la categoria.');
+		res.redirect('/tasks')
+	}
+})
+
+router.patch('/tasks/:taskId', requireAuth, async (req, res) => {
+	try {
+		const { data } = await api.patch(`/api/tasks/${req.params.taskId}/completed`);
+		if (!data.success) throw new Error(data);
+		res.redirect('/');
+	} catch (err) {
+		req.flash('danger_msg', 'Ha ocurrido un error al momento de completar la tarea.');
+		res.redirect('/tasks')
+	}
+})
+
+router.put('/tasks/:taskId', requireAuth, async (req, res) => {
+	try {
+		const { data } = await api.put(`/api/tasks/${req.params.taskId}`, {
+			title: req.body.taskTitle,
+			description: req.body.taskDescription,
+			category: req.body.taskCategory,
+			dueDate: req.body.taskDueDate,
+			priority: req.body.taskPriority
+		});
+		if (!data.success) throw new Error(data);
+		res.redirect('/');
+	} catch (err) {
+		req.flash('danger_msg', 'Ha ocurrido un error al momento de editar la tarea.');
+		res.redirect('/tasks')
+	}
+})
+
+
+router.delete('/tasks/:taskId', requireAuth, async (req, res) => {
+	try {
+		const { data } = await api.delete(`/api/tasks/${req.params.taskId}`)
+		if (!data.success) throw new Error(data);
+		res.redirect('/')
+	} catch (err) {
+		console.log(err)
+		req.flash('danger_msg', 'Ha ocurrido un error al momento de eliminar la tarea.');
+		res.redirect('/tasks')
+	}
+})
+
+
+
 
 export default router;

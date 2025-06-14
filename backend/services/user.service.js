@@ -30,8 +30,9 @@ export const getTasksByUserId = async ({ userId, categoryId, view, sort, complet
 	const sortOrder = sort === 'asc' ? 1 : -1;
 
 	try {
-		const tasks = await Task.find(query).sort({ [sortField]: sortOrder });
-		return createRes(200, { data: tasks });
+		let tasks = await Task.find({ ...query, completed: false }).sort({ [sortField]: sortOrder });
+		const completedTasks = await Task.find({ ...query, completed: true }).sort({ [sortField]: sortOrder });
+		return createRes(200, { data: tasks.concat(completedTasks) });
 	} catch (error) {
 		return createRes(500, { msg: 'Server error while getting task from user', error });
 	}
@@ -104,7 +105,8 @@ export const signup = async (username, { email, password, location, state, profi
 };
 
 export const updateProfile = async (userId, { username, email, state, location }) => {
-	if (!userId || !username || !email || !state || !location) return createRes(400, { msg: 'Missing parameters' })
+	console.log('test', userId, username, email)
+	if (!userId || !username || !email) return createRes(400, { msg: 'Missing parameterssss' })
 
 	try {
 		const user = await User.findByIdAndUpdate(userId,

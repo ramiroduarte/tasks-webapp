@@ -26,7 +26,7 @@ export const getTasksByUserId = async (req, res) => {
 		const response = await userService.getTasksByUserId({ userId, categoryId, view, sort, completed });
 		res.status(response.statusCode).json(response);
 	} catch (error) {
-		sendRes(res, 500, { msg: 'Server eror while getting tasks from user', error });
+		sendRes(res, 500, { msg: 'Server error while getting tasks from user', error });
 	}
 };
 
@@ -110,11 +110,7 @@ export const updateView = async (req, res) => {
 
 export const setCategoryActive = async (req, res) => {
 	try {
-		const { categoryId } = req.body;
-		if (!categoryId) {
-			return sendRes(res, 400, { msg: 'Missing parameters: categoryId' });
-		}
-		const response = await userService.setCategoryActive(req.params.id, categoryId);
+		const response = await userService.setCategoryActive(req.params.id, req.body.categoryId);
 		res.status(response.statusCode).json(response);
 	} catch (error) {
 		sendRes(res, 500, { msg: 'Server error while setting category active', error });

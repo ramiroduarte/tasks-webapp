@@ -81,7 +81,7 @@ export const setTaskAsCompleted = async (taskId) => {
 };
 
 export const editTask = async (taskId, { title, description, category, dueDate, priority }) => {
-	if (!title || !description || !category || !dueDate || !priority) {
+	if (!taskId || !title || !category || !dueDate || !priority) {
 		return createRes(400, { msg: 'Missing parameters' })
 	}
 	description = description.trim()
