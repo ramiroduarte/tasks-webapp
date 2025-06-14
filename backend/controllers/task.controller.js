@@ -32,7 +32,6 @@ export const setTaskAsCompleted = async (req, res) => {
 export const editTask = async (req, res) => {
 	try {
 		const { title, description, category, dueDate, priority } = req.body;
-		console.log('test:', title, description, category, dueDate, priority)
 		const response = await taskService.editTask(req.params.id, { title, description, category, dueDate, priority });
 		res.status(response.statusCode).json(response);
 	} catch (error) {

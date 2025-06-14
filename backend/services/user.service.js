@@ -105,7 +105,6 @@ export const signup = async (username, { email, password, location, state, profi
 };
 
 export const updateProfile = async (userId, { username, email, state, location }) => {
-	console.log('test', userId, username, email)
 	if (!userId || !username || !email) return createRes(400, { msg: 'Missing parameterssss' })
 
 	try {
