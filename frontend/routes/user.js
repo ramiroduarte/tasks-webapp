@@ -1,7 +1,6 @@
 import express from 'express';
 import api from '../helpers/api.js';
 import requireAuth from '../helpers/auth.js';
-import passport from 'passport';
 const router = express.Router();
 
 router.get('/profile', requireAuth, async (req, res) => {
@@ -93,7 +92,7 @@ router.put('/settings/account', requireAuth, async (req, res) => {
 })
 
 
-router.put('/settings/profile', requireAuth, async (req, res) => {
+router.put('/settings/social', requireAuth, async (req, res) => {
 	const userId = req.user._id;
 
 	try {

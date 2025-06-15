@@ -1,6 +1,4 @@
 import express from 'express';
-import api from '../helpers/api.js';
-import requireAuth from '../helpers/auth.js';
 import passport from 'passport';
 const router = express.Router();
 

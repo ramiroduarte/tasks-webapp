@@ -10,8 +10,6 @@ router.get('/users/:id/categories', userController.getCategoriesByUserId);
 
 router.put('/users/:id/profile', userController.updateProfile);
 router.put('/users/:id/social', userController.updateSocial);
-router.put('/users/:id/profileImg', userController.updateProfileImg);
-router.delete('/users/:id/profileImg', userController.deleteProfileImg);
 router.put('/users/:id/password', userController.updatePassword);
 router.delete('/users/:id', userController.deleteAccount);
 router.put('/users/:id/view', userController.updateView);

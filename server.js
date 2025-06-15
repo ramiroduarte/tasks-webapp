@@ -68,8 +68,12 @@ app.use('/api', taskAPI);
 app.use('/api', userAPI);
 
 //Frontend
+import authRouter from './frontend/routes/auth.js'
+import categoryRouter from './frontend/routes/category.js';
 import taskRouter from './frontend/routes/task.js';
 import userRouter from './frontend/routes/user.js';
+app.use(authRouter);
+app.use(categoryRouter);
 app.use(taskRouter);
 app.use(userRouter);
 

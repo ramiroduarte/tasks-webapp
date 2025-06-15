@@ -57,29 +57,6 @@ export const updateSocial = async (req, res) => {
 	}
 };
 
-export const updateProfileImg = async (req, res) => {
-	try {
-		const userId = req.params.id;
-		const file = req.files?.file;
-
-		if (!file) {
-			return sendRes(res, 400, { msg: 'No image file uploaded' });
-		}
-		const response = await userService.updateProfileImg(userId, file);
-		return res.status(response.statusCode).json(response);
-	} catch (err) {
-		sendRes(res, 500, { msg: 'Server error while updating profile img', error });
-	}
-};
-
-export const deleteProfileImg = async (req, res) => {
-	try {
-		const response = await userService.deleteProfileImg(req.params.id);
-		res.status(response.statusCode).json(response);
-	} catch (error) {
-		sendRes(res, 500, { msg: 'Server error while deleting profile img', error });
-	}
-};
 
 export const updatePassword = async (req, res) => {
 	try {

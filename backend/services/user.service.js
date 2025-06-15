@@ -138,53 +138,6 @@ export const updateSocial = async (userId, { instagram, facebook, twitter, linke
 	}
 };
 
-export const updateProfileImg = async (userId, imgURL) => {
-	if (!userId || !imgURL) {
-		return createRes(400, { msg: 'Missing parameters' })
-	}
-	try {
-		let user = await User.findById(userId);
-		if (!user) {
-			return createRes(404, { msg: 'User not found' })
-		}
-		if (user.profileImg.imgURL) {
-			await deleteImage(user.profileImg.public_id);
-		}
-		const result = await uploadImage(file.tempFilePath, 'profile');
-		await fs.unlink(file.tempFilePath);
-		user = await User.findByIdAndUpdate(userId,
-			{ $set: { profileImg: { public_id: result.public_id, imgURL: result.secure_url } } },
-			{ new: true }
-		);
-
-		return createRes(200, { data: user })
-	} catch (error) {
-		return createRes(500, { msg: 'Server error while updating profile image', error })
-	}
-};
-
-export const deleteProfileImg = async (userId) => {
-	if (!userId) {
-		return createRes(400, { msg: 'Missing parameters' })
-	}
-	try {
-		let user = await User.findById(userId);
-		if (!user) {
-			return createRes(404, { msg: 'User not found' })
-		}
-		if (user.profileImg.imgURL) {
-			await deleteImage(user.profileImg.public_id);
-		}
-		user = await User.findByIdAndUpdate(userId,
-			{ $set: { profileImg: { public_id: '', imgURL: '' } } },
-			{ new: true }
-		);
-		return createRes(200, { data: user })
-	} catch (error) {
-		return createRes(500, { msg: 'Server error while deleting profile image', error })
-	}
-};
-
 export const updatePassword = async (userId, { oldPassword, newPassword }) => {
 	if (!userId || !oldPassword || !newPassword) {
 		return createRes(400, { msg: 'Missing parameters' })

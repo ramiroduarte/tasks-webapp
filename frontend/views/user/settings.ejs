@@ -60,18 +60,6 @@
 								</div>
 								<div class="col-md-4 ps-5 position-relative d-flex flex-column align-items-center">
 									<img src="<%= user.profileImg.imgURL ? user.profileImg.imgURL : `https://ui-avatars.com/api/?name=${user.username}&length=1&rounded=true&bolded=true&uppercase=false` %>" alt="Foto de perfil" class="img-fluid rounded-circle" style="width: 225px; height: 225px">
-									<div class="mt-2 d-flex justify-content-between">
-										<form id="profileImgForm" action="/profileImg" method="POST" enctype="multipart/form-data">
-											<input type="file" accept=".png, .jpg, .jpeg" id="profileImgInput" name="image" style="display: none;" onchange="document.getElementById('profileImgForm').submit();">
-											<button type="button" class="btn btn-outline-primary" onclick="document.getElementById('profileImgInput').click()">Editar foto</button>
-										</form>
-										<% if(user.profileImg.imgURL) {%>
-											<form action="/profileImg?_method=DELETE" method="POST">
-												<input type="hidden" name="_method" value="DELETE">
-												<button type="submit" class="btn btn-outline-danger ms-1"><i class="fa-regular fa-trash-can fa-sm" style="color: #f93434;"></i></button>
-											</form>
-										<% } %>
-									</div>
 								</div>
 							</div>
 						</div>
