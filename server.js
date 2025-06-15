@@ -16,26 +16,32 @@ const __dirname = dirname(fileURLToPath(import.meta.url));                  //In
 
 //----- Inicialiazations -----
 const app = express();
-import './config/database.js';
-import './config/passport.js';
+import './backend/config/database.js';
+import './backend/config/passport.js';
 
 //----- Static files -----
-app.use(express.static(path.join(__dirname, 'public')));                    //Indicate the folder of the static files
+app.use(express.static(path.join(__dirname, 'frontend/public')));           //Indicate the folder of the static files
 
 //----- Settings -----
 app.set('port', process.env.PORT || 3000);                                  //Create a variable with 'port' name and value '3000'
 app.set('case sensitive routing', true);                                    //Active case sensitive in routes (ex: is not the sema 'home' with 'Home')
 app.set('view engine', 'ejs');                                              //Indicate the view engine that I'm going to use
-app.set('views', path.join(__dirname, 'views'));                            //Indicate the folder with views where are HTML files
+app.set('views', path.join(__dirname, 'frontend/views'));                   //Indicate the folder with views where are HTML files
 
 //----- Middlewares -----
 app.use(morgan('short'));                                                   //Indicate the middleware what I use, Morgan logs in console when a user makes a request
-app.use(express.urlencoded({ extended: false }));                           //Indicate how I want to receive the user data
+app.use(express.urlencoded({ extended: true }));                            //Indicate how I want to receive the user data
+app.use(express.json())
 app.use(methodOverride('_method'));                                         //Indicate that I'm going to use more methods in addition to HTML provides (GET and POST). It allows you to use PUT, DELETE, etc. (ex. in forms)
 app.use(session({                                                           //Express default config. I didn't understand so much :)
-    secret: 'mysecretapp',
-    resave: true,
-    saveUninitialized: true
+    secret: process.env.SESSION_SECRET || 'mysecretapp',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
+    }
 }));
 app.use(passport.initialize());                                             //This middleware initialize passport
 app.use(passport.session())                                                 //This middleware use express sessions
@@ -51,12 +57,35 @@ app.use((req, res, next) => {                                               //Th
 })
 
 //----- Routes ------
-import mainRouter from './routes/main.js';
-import tasksRouter from './routes/tasks.js';
-import userRouter from './routes/user.js'
-app.use(mainRouter);
-app.use(tasksRouter);
+//Backend
+import authAPI from './backend/routes/auth.js';
+import categoryAPI from './backend/routes/category.js';
+import taskAPI from './backend/routes/task.js';
+import userAPI from './backend/routes/user.js';
+app.use('/api', authAPI);
+app.use('/api', categoryAPI);
+app.use('/api', taskAPI);
+app.use('/api', userAPI);
+
+//Frontend
+import authRouter from './frontend/routes/auth.js'
+import categoryRouter from './frontend/routes/category.js';
+import taskRouter from './frontend/routes/task.js';
+import userRouter from './frontend/routes/user.js';
+app.use(authRouter);
+app.use(categoryRouter);
+app.use(taskRouter);
 app.use(userRouter);
+
+
+
+app.get('/', async (req, res) => {
+    if ((req.isAuthenticated && req.isAuthenticated()) || req.user) {
+        res.redirect('/tasks');
+    } else {
+        res.render('main/index', { alerts: [] });
+    }
+})
 
 app.use((req, res, next) => {
     res.status(404).send('Página no encontrada.');

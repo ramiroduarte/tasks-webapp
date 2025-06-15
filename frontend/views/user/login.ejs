@@ -18,12 +18,12 @@
                     <h3>Iniciar sesión</h3>
                 </div>
                 <div class="card-body">
-                    <form action="/login" method="POST" class="needs-validation" novalidate>
+                    <form action="/login" method="POST" class="needs-validation" value="<%= typeof email !== 'undefined' ? email : '' %>" novalidate>
                         <!-- Email -->
                         <div class="mb-3">
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                                <input type="email" name="email" id="email" class="form-control" placeholder="Correo electrónico" autofocus required>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="Correo electrónico" value="<%= email %>" autofocus required>
                                 <div class="invalid-feedback ms-5 fs-7" id="email-required">
                                     Este campo es obligatorio.
                                 </div>

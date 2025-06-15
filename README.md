@@ -8,6 +8,8 @@
 ## 🚀 Overview
 A simple and efficient task management web application designed to help users manage and track their daily activities efficiently. The app features user authentication, task creation, editing, and deletion, along with a clean and intuitive interface.
 
+This is a personal project created to apply and enhance my knowledge in full-stack web development. While it is not a large-scale application, it is structured to follow good development practices and scalability.  
+
 ## 🚧 Development Status  
 This project is currently **_under development_** with constant updates.
 

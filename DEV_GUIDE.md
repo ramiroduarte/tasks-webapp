@@ -1,8 +1,23 @@
 ## **EndPoints:**
 | Method | Endpoint         | Description                                                        |
 |--------|------------------|--------------------------------------------------------------------|
-| `GET`  | /api/tasks/:id   | To get all tasks from an user.                                     |
-| `GET`  | /api/user/:id    | To get a user by ID.                                               |
+| `GET`  | /api/users   | To get all users.                                     |
+| `GET`  | /api/users/:id    | To get a user by ID.                                               |
+| `GET`  | /api/users/:id/tasks   | To get all tasks from an user.                                     |
+| `GET`  | /api/users/:id/categories   | To get all categories from an user.                                     |
+| `GET`  | /api/tasks/:id   | To get a task by ID.                                     |
+| `GET`  | /api/categories/:id   | To get a category by ID.                                     |
+
+
+## **Http status code:**
+| Code | Name                    | Description                                                         |
+|------|-------------------------|----------------------------------------------------------------------|
+| `200`  | OK                      | The request was successful (GET, PUT, DELETE, etc.)                 |
+| `201`  | Created                 | A new resource was successfully created (POST)                      |
+| `400`  | Bad Request             | The client sent invalid or malformed data                           |
+| `401`  | Unauthorized            | Authentication is missing or the token is invalid                   |
+| `500`  | Internal Server Error   | An unexpected error occurred on the server (exception, logic fail)  |
+
 
 
 -------------------------

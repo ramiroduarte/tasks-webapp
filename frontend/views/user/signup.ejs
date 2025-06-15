@@ -20,7 +20,7 @@
                     <h3>Registrarse</h3>
                 </div>
                 <div class="card-body">
-                    <form class="needs-validation" action="/signup" method="POST" novalidate>
+                    <form class="needs-validation" id="signup-form" novalidate>
                         <!-- Username -->
                         <div class="mb-1 input-group">
                             <span class="input-group-text"><i class='bx bx-at'></i></span>
@@ -30,8 +30,7 @@
                             </div>
                             <div class="invalid-feedback ms-5 fs-7" id="username-maxlength">
                                 El nombre de usuario debe tener a lo sumo 30 caracteres.
-                            </div>
-
+                            </div>  
                         </div>
                         <!-- Correo electrónico -->
                         <div class="mb-1 input-group">
@@ -95,3 +94,37 @@
         </div>
     </div>     
 </div>
+
+
+<script>
+    const signupForm = document.getElementById('signup-form');
+
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, email, password, confirmPassword }),
+        });
+
+        const data = await response.json();
+
+        if (response.status === 200) {
+            // Success: redirect to login page without alerts
+            window.location.href = '/login';
+        } else if (response.status === 400) {
+            // Error: stay on signup page and show alert
+            // The alert will be automatically displayed via the session
+            location.reload();  // Trigger page reload to show alert
+            // window.location.heref = '/signup';
+        }
+    });
+</script>
